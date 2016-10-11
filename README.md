@@ -20,3 +20,14 @@ Your heading is gathered using the [DeviceOrientation API](https://developer.app
 The rotation of the icon is acheived using the plugin [Leaflet.RotatedMarker](https://github.com/bbecquet/Leaflet.RotatedMarker).
 
 The flight path is drawn using the plugin [Leaflet.Geodesic](https://github.com/henrythasler/Leaflet.Geodesic)
+
+## Contributions
+
+Contributions to this repository are welcome!
+
+Requirements:
+- Node
+- npm
+- Gulp
+    
+Run `gulp build` to build assets from the `/src` directory to the `/dist` directory. Please see the `gulpfile.js` for more commands available. 
