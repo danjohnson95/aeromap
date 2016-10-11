@@ -1,1 +1,17 @@
-CACHE MANIFEST #1476226864331./dist./favicon.ico./index.html
+CACHE MANIFEST
+
+CACHE:
+dist/css/app.css
+dist/fonts/Raleway-Medium.ttf
+dist/fonts/Raleway-Regular.ttf
+dist/img/marker.png
+dist/js/app.js
+dist/json/geojson_small.json
+index.html
+favicon.ico
+
+NETWORK:
+*
+
+SETTINGS:
+prefer-online

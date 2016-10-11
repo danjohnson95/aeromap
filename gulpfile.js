@@ -7,6 +7,7 @@ var gulp 		= require('gulp');
 	jsonminify 	= require('gulp-jsonminify'),
 	fs 			= require('fs'),
 	del 		= require('del'),
+	manifest 	= require('gulp-manifest'),
 
 	i 			= './src',
 	o 			= './dist',
@@ -61,7 +62,14 @@ var gulp 		= require('gulp');
 	},
 
 	rebuildManifest = function(){
-		fs.writeFileSync('./manifest.mf', 'CACHE MANIFEST \r#'+buildTime+'\r'+o+'\r./favicon.ico\r./index.html');
+		gulp.src(['dist/**/*', 'index.html', 'favicon.ico'], { base: './'})
+	    .pipe(manifest({
+	      hash: true,
+	      preferOnline: true,
+	      network: ['*'],
+	      filename: 'manifest.mf'
+	     }))
+	    .pipe(gulp.dest('./'));
 	},
 
 	clean = function(){
