@@ -15,7 +15,7 @@ var map = L.map('map', {
 	};
 
     var planeIcon = L.icon({
-        iconUrl:'marker.png',
+        iconUrl:'/dist/img/marker.png',
         iconSize: [30, 30],
         iconAnchor: [15, 15]
     });
@@ -27,7 +27,7 @@ var map = L.map('map', {
     	steps: 50
     }).addTo(map);
 
-    $.getJSON('/dist/json/geojson_medium.json', function(data){
+    $.getJSON('/dist/json/geojson_small.json', function(data){
         L.geoJson(data, {
             style: style
         }).addTo(map);
