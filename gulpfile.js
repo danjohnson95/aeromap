@@ -20,8 +20,8 @@ var gulp 		= require('gulp');
 
 	sassTask = function(){
 		return gulp.src(sassFiles)
-	    	.pipe(sass({outputStyle: 'compressed'})
-	    	.pipe(gulp.dest(o+'/css'));
+	    	.pipe(sass({outputStyle: 'compressed'}))
+    		.pipe(gulp.dest(o+'/css'));
 	},
 
 	jsTask = function(){
@@ -43,7 +43,7 @@ var gulp 		= require('gulp');
 
 	jsonTask = function(){
 		return gulp.src(jsonFiles, {base: i+'/json'})
-			.pipe(jsonminify())
+			//.pipe(jsonminify())
 			.pipe(gulp.dest(o+'/json'));
 	},
 
@@ -78,9 +78,10 @@ var gulp 		= require('gulp');
 	gulp.task('fonts', fontsTask);
 	gulp.task('json', jsonTask);
 	gulp.task('img', imgTask);
+	gulp.task('manifest', rebuildManifest);
 	gulp.task('rebuild', ['clean', 'build']);
 	gulp.task('clean', clean);
-	gulp.task('build', ['js', 'sass', 'fonts', 'json', 'img']);
+	gulp.task('build', ['js', 'sass', 'fonts', 'json', 'img', 'manifest']);
 
 	gulp.task('default', ['build', 'watch']);
 
