@@ -1,0 +1,36 @@
+{
+  "name": "aeromap",
+  "version": "0.0.1",
+  "description": "An offline-accessible world map with your GPS location plotted on, so you can see where you are during a flight",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danjohnson95/aeromap.git"
+  },
+  "keywords": [
+    "aeromap"
+  ],
+  "author": "Dan Johnson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danjohnson95/aeromap/issues"
+  },
+  "homepage": "https://github.com/danjohnson95/aeromap#readme",
+  "devDependencies": {
+    "Leaflet.Geodesic": "danjohnson95/Leaflet.Geodesic",
+    "browserify": "^13.1.0",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-jsonminify": "^1.0.0",
+    "gulp-sass": "^2.3.2",
+    "gulp-uglify": "^2.0.0",
+    "jquery": "^3.1.1",
+    "leaflet": "^1.0.1",
+    "leaflet-rotatedmarker": "^0.1.1",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}

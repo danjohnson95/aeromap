@@ -1,13 +1,1 @@
-CACHE MANIFEST
-#yo
-/index.html
-/favicon.ico
-/geojson2.json
-/plane.png
-/leaflet.css
-/fonts/Raleway-Regular.ttf
-/fonts/Raleway-Medium.ttf
-/jquery.min.js
-/leaflet.js
-/leaflet.rotate.js
-/leaflet.geodesic.js
+CACHE MANIFEST #1476220183777./dist./favicon.ico./index.html
