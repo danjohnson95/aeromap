@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var leaflet = require('leaflet');
 require('Leaflet.Geodesic');
 require('leaflet-rotatedmarker');
@@ -30,36 +29,26 @@ var map = L.map('map', {
     	steps: 50
     }).addTo(map);
 
-    $.getJSON('/dist/json/geojson_small.json', function(data){
-        L.geoJson(data, {
+    loadJSON('/dist/json/geojson_small.json', function(e){
+		L.geoJson(e, {
             style: style
         }).addTo(map);
         geoJsonLoaded = true;
-        $(document).trigger('ajaxLoaded');
     });
-
+    
 	var cities = [];
-    $.ajax({
-        url:'/dist/json/capitol.json',
-        success: function(json){
-            $.each(json, function(e, i){
-                cities.push([i.CapitalName, i.CapitalLatitude, i.CapitalLongitude, i.CountryName]);
-            });
-            citiesLoaded = true;
-            $(document).trigger('ajaxLoaded');
-        }
+    loadJSON('/dist/json/capitol.json', function(e){
+    	citiesLoaded = true;
+    	cities = e;
+    	document.dispatchEvent(new CustomEvent("ajaxLoaded"));
+    	//$(document).trigger('ajaxLoaded');
     });
 
     var airports = [];
-    $.ajax({
-    	url:'/dist/json/airports.json',
-    	success: function(json){
-    		airports = json;
-    		$(document).trigger('searchLoaded');
-    	},
-    	error: function(e){
-    		console.log(e);
-    	}
+    loadJSON('/dist/json/airports.json', function(e){
+    	airports = e;
+    	//$(document).trigger('searchLoaded');
+    	document.dispatchEvent(new CustomEvent("searchLoaded"));
     });
 
     geodesic.setLatLngs([
@@ -69,13 +58,14 @@ var map = L.map('map', {
     	]
 	]);
 
-	$(document).on('searchLoaded', function(){
+    document.addEventListener("searchLoaded", function(e){
 		console.log('search ready!');
+		console.log(airports);
 	});
 
 
 	if(navigator.geolocation){
-		$(document).on('ajaxLoaded', function(){
+		document.addEventListener('ajaxLoaded', function(e){
 			if(geoJsonLoaded && citiesLoaded)
 				navigator.geolocation.getCurrentPosition(showPosition);
 		});
@@ -151,15 +141,16 @@ var map = L.map('map', {
 	}
 
 	function loadJSON(url, callback, errCallback){
-		if(!errCallback) errCallback = null;
 		var xobj = new XMLHttpRequest();
 			xobj.overrideMimeType('application/json');
 		xobj.open('GET', url, true);
 		xobj.onreadystatechange = function(){
 			if(xobj.readyState == 4 && xobj.status == "200"){
-				callback(xobj.responseText);
+				callback(JSON.parse(xobj.responseText));
 			}else{
-				errCallback(xobj.responseText);
+				if(arguments.length > 2){
+					errCallback(xobj.responseText);
+				}
 			}
 		};
 		xobj.send(null);
