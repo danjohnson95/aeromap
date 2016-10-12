@@ -63,7 +63,7 @@ var gulp 		= require('gulp');
 	},
 
 	rebuildManifest = function(){
-		gulp.src(['dist/**/*', 'index.html', 'favicon.ico'], { base: './'})
+		gulp.src(['dist/**/*', 'index.html', 'favicon.ico', 'marker.png'], { base: './'})
 	    .pipe(manifest({
 	      hash: true,
 	      preferOnline: true,
