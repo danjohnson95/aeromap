@@ -92,12 +92,15 @@ var map = L.map('map', {
 	var heading = stats.querySelector('.heading .value');
 	var speed = stats.querySelector('.speed .value');
 	var city = stats.querySelector('.city .value');
+	var lastCompassHeading = 361;
 
 	var icon = null;
 
 	window.addEventListener('deviceorientation', function(e) {
-		if(Number.isInteger(e.webkitCompassHeading)){
-			heading.classList.remove('loading');
+
+		if(Number.isFinite(e.webkitCompassHeading) && Math.floor(e.webkitCompassHeading) != lastCompassHeading){
+			if(heading.classList.contains('loading')) heading.classList.remove('loading');
+			if(heading.classList.contains('failed')) heading.classList.remove('failed');
 			heading.innerHTML = Math.floor(e.webkitCompassHeading);
 			if(icon) icon.setRotationAngle(e.webkitCompassHeading);
 		}else{
