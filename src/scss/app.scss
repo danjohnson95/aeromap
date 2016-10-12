@@ -34,15 +34,46 @@
 			z-index:9999;
 			margin: 1em;
 			pointer-events:none;
-		}
+			
+			.box{
+				width:130px;
+				padding: 1em;
+				background-color: rgba(255,255,255,0.85);
+				margin: 0em .2em;
+				display: inline-block;
+				border-radius: 3px;
 
-		#stats .box{
-			width:130px;
-			padding: 1em;
-			background-color: rgba(255,255,255,0.85);
-			margin: 0em .2em;
-			display: inline-block;
-			border-radius: 3px;
+				&.city{
+					width: 410px;
+					display: block;
+					margin-top: 10px;
+					.value{
+						font-size: 18px;
+					}
+				}
+			}
+
+			@media screen and (max-width: 500px){
+				left: 0;
+				margin: 0;
+				width: 100%;
+				box-sizing: border-box;
+				.box{
+					width: 30.6%;
+					box-sizing:border-box;
+					float: left;
+					margin: 2%;
+					margin-left: 0;
+					&:first-child, &.city{
+						margin-left: 2%;
+					}
+					&.city{
+						width: 96%;
+						margin-top: 0;
+					}
+				}
+			}
+
 		}
 
 		#stats .box .value.loading:after{

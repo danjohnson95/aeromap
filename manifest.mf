@@ -6,6 +6,7 @@ dist/fonts/Raleway-Medium.ttf
 dist/fonts/Raleway-Regular.ttf
 dist/img/marker.png
 dist/js/app.js
+dist/json/capitol.json
 dist/json/geojson_small.json
 index.html
 favicon.ico
@@ -15,3 +16,5 @@ NETWORK:
 
 SETTINGS:
 prefer-online
+
+# hash: 4b8295fec7c1c56d411c51efcb03a480bd3e24667683f95e1507fe6bf2d4b291
