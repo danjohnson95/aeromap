@@ -82,11 +82,11 @@ var gulp 		= require('gulp');
 	};
 
 	gulp.task('watch', watchTask);
-	gulp.task('sass', sassTask);
-	gulp.task('js', jsTask);
-	gulp.task('fonts', fontsTask);
-	gulp.task('json', jsonTask);
-	gulp.task('img', imgTask);
+	gulp.task('sass', ['manifest'], sassTask);
+	gulp.task('js', ['manifest'], jsTask);
+	gulp.task('fonts', ['manifest'], fontsTask);
+	gulp.task('json', ['manifest'], jsonTask);
+	gulp.task('img', ['manifest'], imgTask);
 	gulp.task('manifest', rebuildManifest);
 	gulp.task('rebuild', ['clean', 'build']);
 	gulp.task('clean', clean);
