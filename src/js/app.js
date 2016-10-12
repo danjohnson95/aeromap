@@ -75,9 +75,15 @@ var map = L.map('map', {
 	if(navigator.geolocation){
 
 		navigator.geolocation.watchPosition(function(e){
-			document.addEventListener('ajaxLoaded', function(e){
-				if(geoJsonLoaded && citiesLoaded)
+			console.log('position ready');
+			document.addEventListener('ajaxLoaded', function(){
+				console.log('ajax Loaded');
+				console.log(geoJsonLoaded);
+				console.log(citiesLoaded);
+				if(geoJsonLoaded && citiesLoaded){
+					console.log('ready to show');
 					showPosition(e);
+				}
 			});
 		}, function(e){
 			locationNotFound.classList.add('show');
@@ -117,29 +123,24 @@ var map = L.map('map', {
 			icon: planeIcon, 
 			rotationOrigin: 'center center'
 		}).addTo(map);
+		
 		map.panTo(L.latLng([position.coords.latitude, position.coords.longitude]));
 
-		if(position.coords.altitude !== null){
-			altitude.innerHTML = Math.floor(position.coords.altitude);
-		}else{
-			altitude.claddList.remove('loading').add('failed');
-		}
-
-		if(altitude.classList.contains('loading')) altitude.classList.remove('loading');
-		heading.innerHTML = position.coords.heading ? Math.floor(position.coords.heading) : "?";
-		if(heading.classList.contains('loading')) heading.classList.remove('loading');
-		speed.innerHTML = position.coords.speed !== null ? Math.floor((position.coords.speed * 2.237)) : "?";
-		if(speed.classList.contains('loading')) speed.classList.remove('loading');
-		city.innerHTML = NearestCity(position.coords.latitude, position.coords.longitude);
-		if(city.classList.contains('loading')) city.classList.remove('loading');		
+		if(position.coords.altitude === null) valueFailed(altitude); else showValue(altitude, position.coords.altitude, true);
+		if(position.coords.speed === null) valueFailed(speed); else showValue(speed, position.coords.speed, true);
+		if(position.coords.latitude === null) valueFailed(city); else showValue(city, NearestCity(position.coords.latitude, position.coords.longitude), false);
 	}
 
-	function locationFailure(e){
-		console.log('Position failed');
-		console.error(e);
+	function valueFailed(element){
+		if(element.classList.contains('loading')) element.classList.remove('loading');
+		if(!element.classList.contains('failed')) element.classList.add('failed');
 	}
 
-	
+	function showValue(element, value, flatten){
+		if(element.classList.contains('loading')) element.classList.remove('loading');
+		if(element.classList.contains('failed')) element.classList.remove('failed');
+		element.innerHTML = (flatten ? Math.floor(value) : value);
+	}
 
 	function NearestCity(latitude, longitude) {
 	  var mindif = 99999;
