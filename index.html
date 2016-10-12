@@ -10,31 +10,42 @@
 </head>
 <body>
 
-	<div id="map"></div>
+	<div id="map-outer">
+		<div id="map"></div>
+	</div>
 
 	<div id="stats">
 		<div class="box altitude">
 			<small>Altitude</small>
 			<span class="value loading"></span>
-			<span class="unit">ft</span>
+			<span class="unit hide">ft</span>
 		</div>
 
 		<div class="box heading">
 			<small>Heading</small>
 			<span class="value loading"></span>
-			<span class="unit">&deg;</span>
+			<span class="unit hide">&deg;</span>
 		</div>
 
 		<div class="box speed">
 			<small>Speed</small>
 			<span class="value loading"></span>
-			<span class="unit">mph</span>
+			<span class="unit hide">mph</span>
 		</div>
 
 		<div class="box city">
 			<small>Closest City</small>
 			<span class="value loading"></span>
-			<span class="unit"></span>
+		</div>
+
+		<div id="location-not-found">
+			<p>Your location could not be found</p>
+			<button class="retry-position">Retry</button>
+		</div>
+
+		<div id="location-fail">
+			<p>Location unsupported/access denied</p>
+			<button class="retry-position">Retry</button>
 		</div>
 
 	</div>

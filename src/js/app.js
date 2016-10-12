@@ -1,6 +1,7 @@
 var leaflet = require('leaflet');
 require('Leaflet.Geodesic');
 require('leaflet-rotatedmarker');
+var functions = require('./functions.js');
 
 var geoJsonLoaded = false;
 var citiesLoaded = false;
@@ -29,7 +30,7 @@ var map = L.map('map', {
     	steps: 50
     }).addTo(map);
 
-    loadJSON('/dist/json/geojson_small.json', function(e){
+    functions.loadJSON('/dist/json/geojson_small.json', function(e){
 		L.geoJson(e, {
             style: style
         }).addTo(map);
@@ -37,7 +38,7 @@ var map = L.map('map', {
     });
     
 	var cities = [];
-    loadJSON('/dist/json/capitol.json', function(e){
+    functions.loadJSON('/dist/json/capitol.json', function(e){
     	citiesLoaded = true;
     	cities = e;
     	document.dispatchEvent(new CustomEvent("ajaxLoaded"));
@@ -45,7 +46,7 @@ var map = L.map('map', {
     });
 
     var airports = [];
-    loadJSON('/dist/json/airports.json', function(e){
+    functions.loadJSON('/dist/json/airports.json', function(e){
     	airports = e;
     	//$(document).trigger('searchLoaded');
     	document.dispatchEvent(new CustomEvent("searchLoaded"));
@@ -60,20 +61,33 @@ var map = L.map('map', {
 
     document.addEventListener("searchLoaded", function(e){
 		console.log('search ready!');
-		console.log(airports);
 	});
 
+    var stats = document.getElementById('stats');
+    var locationNotFound = stats.querySelector('#location-not-found');
+    var locationFail = stats.querySelector('#location-fail');
+    var retryBtn = stats.querySelector('.retry-position');
+
+    retryBtn.addEventListener('click', function(e){
+    	console.log('CLICKED');
+    });
 
 	if(navigator.geolocation){
-		document.addEventListener('ajaxLoaded', function(e){
-			if(geoJsonLoaded && citiesLoaded)
-				navigator.geolocation.getCurrentPosition(showPosition);
+
+		navigator.geolocation.watchPosition(function(e){
+			document.addEventListener('ajaxLoaded', function(e){
+				if(geoJsonLoaded && citiesLoaded)
+					showPosition(e);
+			});
+		}, function(e){
+			locationNotFound.classList.add('show');
 		});
+		
 	}else{
-            alert('not supported');
+		locationFail.classList.add('show');
 	}
 
-	var stats = document.getElementById('stats');
+	
 	var altitude = stats.querySelector('.altitude .value');
 	var heading = stats.querySelector('.heading .value');
 	var speed = stats.querySelector('.speed .value');
@@ -82,11 +96,18 @@ var map = L.map('map', {
 	var icon = null;
 
 	window.addEventListener('deviceorientation', function(e) {
-    	heading.innerHTML = Number.isInteger(e.webkitCompassHeading) ? Math.floor(e.webkitCompassHeading) : "?"
-        if(icon && heading.innerHTML != "?") icon.setRotationAngle(e.webkitCompassHeading);
+		if(Number.isInteger(e.webkitCompassHeading)){
+			heading.classList.remove('loading');
+			heading.innerHTML = Math.floor(e.webkitCompassHeading);
+			if(icon) icon.setRotationAngle(e.webkitCompassHeading);
+		}else{
+    		heading.classList.remove('loading');
+    		heading.classList.add('failed');
+    	}
 	}, false);
 
 	function showPosition(position){
+		console.log('Got position!');
 		console.log(position);
 
 		icon = L.marker([position.coords.latitude, position.coords.longitude], {
@@ -95,7 +116,12 @@ var map = L.map('map', {
 		}).addTo(map);
 		map.panTo(L.latLng([position.coords.latitude, position.coords.longitude]));
 
-		altitude.innerHTML = position.coords.altitude ? Math.floor(position.coords.altitude) : "?";
+		if(position.coords.altitude !== null){
+			altitude.innerHTML = Math.floor(position.coords.altitude);
+		}else{
+			altitude.claddList.remove('loading').add('failed');
+		}
+
 		if(altitude.classList.contains('loading')) altitude.classList.remove('loading');
 		heading.innerHTML = position.coords.heading ? Math.floor(position.coords.heading) : "?";
 		if(heading.classList.contains('loading')) heading.classList.remove('loading');
@@ -105,32 +131,19 @@ var map = L.map('map', {
 		if(city.classList.contains('loading')) city.classList.remove('loading');		
 	}
 
-	// Convert Degress to Radians
-	function Deg2Rad(deg) {
-	  return deg * Math.PI / 180;
+	function locationFailure(e){
+		console.log('Position failed');
+		console.error(e);
 	}
 
-	function PythagorasEquirectangular(lat1, lon1, lat2, lon2) {
-	  lat1 = Deg2Rad(lat1);
-	  lat2 = Deg2Rad(lat2);
-	  lon1 = Deg2Rad(lon1);
-	  lon2 = Deg2Rad(lon2);
-	  var R = 6371; // km
-	  var x = (lon2 - lon1) * Math.cos((lat1 + lat2) / 2);
-	  var y = (lat2 - lat1);
-	  var d = Math.sqrt(x * x + y * y) * R;
-	  return d;
-	}
-
-	var lat = 20; // user's latitude
-	var lon = 40; // user's longitude
+	
 
 	function NearestCity(latitude, longitude) {
 	  var mindif = 99999;
 	  var closest;
 
 	  for (index = 0; index < cities.length; ++index) {
-	    var dif = PythagorasEquirectangular(latitude, longitude, cities[index][1], cities[index][2]);
+	    var dif = functions.PythagorasEquirectangular(latitude, longitude, cities[index][1], cities[index][2]);
 	    if (dif < mindif) {
 	      closest = index;
 	      mindif = dif;
@@ -140,18 +153,4 @@ var map = L.map('map', {
 	  return [cities[closest][0], cities[closest][3]];
 	}
 
-	function loadJSON(url, callback, errCallback){
-		var xobj = new XMLHttpRequest();
-			xobj.overrideMimeType('application/json');
-		xobj.open('GET', url, true);
-		xobj.onreadystatechange = function(){
-			if(xobj.readyState == 4 && xobj.status == "200"){
-				callback(JSON.parse(xobj.responseText));
-			}else{
-				if(arguments.length > 2){
-					errCallback(xobj.responseText);
-				}
-			}
-		};
-		xobj.send(null);
-	}
+
