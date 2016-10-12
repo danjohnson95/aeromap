@@ -3,6 +3,9 @@ var leaflet = require('leaflet');
 require('Leaflet.Geodesic');
 require('leaflet-rotatedmarker');
 
+var geoJsonLoaded = false;
+var citiesLoaded = false;
+
 var map = L.map('map', {
 		center: [51.505, -0.09],
 		zoom: 4
@@ -31,6 +34,32 @@ var map = L.map('map', {
         L.geoJson(data, {
             style: style
         }).addTo(map);
+        geoJsonLoaded = true;
+        $(document).trigger('ajaxLoaded');
+    });
+
+	var cities = [];
+    $.ajax({
+        url:'/dist/json/capitol.json',
+        success: function(json){
+            $.each(json, function(e, i){
+                cities.push([i.CapitalName, i.CapitalLatitude, i.CapitalLongitude, i.CountryName]);
+            });
+            citiesLoaded = true;
+            $(document).trigger('ajaxLoaded');
+        }
+    });
+
+    var airports = [];
+    $.ajax({
+    	url:'/dist/json/airports.json',
+    	success: function(json){
+    		airports = json;
+    		$(document).trigger('searchLoaded');
+    	},
+    	error: function(e){
+    		console.log(e);
+    	}
     });
 
     geodesic.setLatLngs([
@@ -40,9 +69,16 @@ var map = L.map('map', {
     	]
 	]);
 
+	$(document).on('searchLoaded', function(){
+		console.log('search ready!');
+	});
+
 
 	if(navigator.geolocation){
-		navigator.geolocation.getCurrentPosition(showPosition);
+		$(document).on('ajaxLoaded', function(){
+			if(geoJsonLoaded && citiesLoaded)
+				navigator.geolocation.getCurrentPosition(showPosition);
+		});
 	}else{
             alert('not supported');
 	}
@@ -56,8 +92,8 @@ var map = L.map('map', {
 	var icon = null;
 
 	window.addEventListener('deviceorientation', function(e) {
-    	heading.innerHTML = Math.floor(e.webkitCompassHeading);
-        if(icon) icon.setRotationAngle(e.webkitCompassHeading);
+    	heading.innerHTML = Number.isInteger(e.webkitCompassHeading) ? Math.floor(e.webkitCompassHeading) : "?"
+        if(icon && heading.innerHTML != "?") icon.setRotationAngle(e.webkitCompassHeading);
 	}, false);
 
 	function showPosition(position){
@@ -75,10 +111,8 @@ var map = L.map('map', {
 		if(heading.classList.contains('loading')) heading.classList.remove('loading');
 		speed.innerHTML = position.coords.speed !== null ? Math.floor((position.coords.speed * 2.237)) : "?";
 		if(speed.classList.contains('loading')) speed.classList.remove('loading');
-		city.innerHTML = "?";
+		city.innerHTML = NearestCity(position.coords.latitude, position.coords.longitude);
 		if(city.classList.contains('loading')) city.classList.remove('loading');		
-		
-		NearestCity(position.coords.latitude, position.coords.longitude);
 	}
 
 	// Convert Degress to Radians
@@ -101,13 +135,6 @@ var map = L.map('map', {
 	var lat = 20; // user's latitude
 	var lon = 40; // user's longitude
 
-	var cities = [
-	  ["city1", 10, 50, "blah"],
-	  ["city2", 40, 60, "blah"],
-	  ["city3", 25, 10, "blah"],
-	  ["city4", 5, 80, "blah"]
-	];
-
 	function NearestCity(latitude, longitude) {
 	  var mindif = 99999;
 	  var closest;
@@ -120,5 +147,20 @@ var map = L.map('map', {
 	    }
 	  }
 
-	  // alert(cities[closest]);
+	  return [cities[closest][0], cities[closest][3]];
+	}
+
+	function loadJSON(url, callback, errCallback){
+		if(!errCallback) errCallback = null;
+		var xobj = new XMLHttpRequest();
+			xobj.overrideMimeType('application/json');
+		xobj.open('GET', url, true);
+		xobj.onreadystatechange = function(){
+			if(xobj.readyState == 4 && xobj.status == "200"){
+				callback(xobj.responseText);
+			}else{
+				errCallback(xobj.responseText);
+			}
+		};
+		xobj.send(null);
 	}

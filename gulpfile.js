@@ -11,11 +11,12 @@ var gulp 		= require('gulp');
 
 	i 			= './src',
 	o 			= './dist',
+	npm			= './node_modules',
 	buildTime	= new Date().getTime(),
 	sassFiles 	= [i+'/scss/**/*.scss'],
 	jsFiles 	= i+'/js/app.js',
 	fontFiles 	= i+'/fonts/*',
-	jsonFiles 	= i+'/json/*',
+	jsonFiles 	= [i+'/json/*'],
 	iconFiles 	= i+'/img/icons/*',
 	imgFiles 	= [i+'/img/*', '!+'+i+'/img/icons/*'],
 
