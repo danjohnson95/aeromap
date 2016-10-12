@@ -18,7 +18,7 @@ var map = L.map('map', {
 	};
 
     var planeIcon = L.icon({
-        iconUrl:'/dist/img/marker.png',
+        iconUrl:'marker.png',
         iconSize: [30, 30],
         iconAnchor: [15, 15]
     });
@@ -75,16 +75,7 @@ var map = L.map('map', {
 	if(navigator.geolocation){
 
 		navigator.geolocation.watchPosition(function(e){
-			console.log('position ready');
-			document.addEventListener('ajaxLoaded', function(){
-				console.log('ajax Loaded');
-				console.log(geoJsonLoaded);
-				console.log(citiesLoaded);
-				if(geoJsonLoaded && citiesLoaded){
-					console.log('ready to show');
-					showPosition(e);
-				}
-			});
+			showPosition(e);
 		}, function(e){
 			locationNotFound.classList.add('show');
 		});
@@ -115,14 +106,17 @@ var map = L.map('map', {
     	}
 	}, false);
 
+
 	function showPosition(position){
 		console.log('Got position!');
 		console.log(position);
 
 		icon = L.marker([position.coords.latitude, position.coords.longitude], {
-			icon: planeIcon, 
-			rotationOrigin: 'center center'
+			icon: planeIcon//, 
+			//rotationOrigin: 'center center'
 		}).addTo(map);
+
+		console.log(icon);
 		
 		map.panTo(L.latLng([position.coords.latitude, position.coords.longitude]));
 
@@ -154,7 +148,7 @@ var map = L.map('map', {
 	    }
 	  }
 
-	  return [cities[closest][0], cities[closest][3]];
+	  return cities[closest][0]+", "+cities[closest][3];
 	}
 
 
