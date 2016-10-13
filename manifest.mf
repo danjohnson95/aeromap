@@ -4,11 +4,11 @@ CACHE:
 dist/css/app.css
 dist/fonts/Raleway-Medium.ttf
 dist/fonts/Raleway-Regular.ttf
-dist/js/app.js
 dist/img/error.svg
 dist/img/marker.png
 dist/img/retry.svg
 dist/img/settings.svg
+dist/js/app.js
 dist/json/airports.json
 dist/json/capitol.json
 dist/json/geojson_small.json
@@ -22,4 +22,4 @@ NETWORK:
 SETTINGS:
 prefer-online
 
-# hash: 33f1d7f05ce4c585329ab8d02b4a5c09f6d2ef67e3c6acc02721375e72eded4d
+# hash: bd88ebc32a4a2bc5c803de077eb34cba07e9399154f96e0a0ea3a21b11ef0060
