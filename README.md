@@ -5,7 +5,7 @@ Use your device's GPS location service to find out where you are when you're on 
 
 ## See it in action
 
-Head over to http://aeroview.zappem.xyz on an iOS device. Tap the Share button at the bottom of Safari, and select *Add to Home Screen*. Open the application from the home screen - this is when the necessary files get cached.
+Head over to https://aeromap.xyz on an iOS device. Tap the Share button at the bottom of Safari, and select *Add to Home Screen*. Open the application from the home screen - this is when the necessary files get cached.
 
 And you're ready to go! Don't forget to activate Airplane Mode when you board the aircraft.
 
