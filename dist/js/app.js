@@ -13602,6 +13602,7 @@ window.aeromap = {
 	},
 
 	tryLocation: function(){
+		console.log('try again');
 		if(navigator.geolocation){
 			
 			if(!this.first){
@@ -13628,6 +13629,8 @@ window.aeromap = {
 				aeromap.showPosition();
 			}, function(e){
 				if(!aeromap.elements.stats.classList.contains('location-err')) aeromap.elements.stats.classList.add('location-err');
+				aeromap.elements.stats.querySelector('#location-not-found .timer').innerHTML = 5;
+				this.resetTimer = setTimeout(aeromap.tryLocation, 5000);
 				//if(!aeromap.elements.locationNotFound.classList.contains('show')) aeromap.elements.locationNotFound.classList.add('show');
 			});
 			
