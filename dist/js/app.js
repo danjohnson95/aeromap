@@ -13593,9 +13593,7 @@ window.aeromap = {
 
 	getElements: function(){
 		this.elements.stats = document.getElementById('stats');
-		this.elements.locationNotFound = this.elements.stats.querySelector('#location-not-found');
 		this.elements.mapLoading = document.getElementById('mapload');
-		this.elements.locationFail = stats.querySelector('#location-fail');
 		this.elements.retryBtn = stats.querySelector('.retry-position');
 		this.elements.altitude = stats.querySelector('.altitude .value');
 		this.elements.heading = stats.querySelector('.heading .value');
@@ -13618,9 +13616,7 @@ window.aeromap = {
 				for(i=0;i<elements.length;i++){
 					this.resetValue(elements[i]);
 				}
-				if(this.elements.locationNotFound.classList.contains('show')) this.elements.locationNotFound.classList.remove('show');
-				if(this.elements.locationFail.classList.contains('show')) this.elements.locationNotFound.classList.remove('show');
-
+				if(this.elements.stats.classList.contains('location-err')) this.elements.classList.remove('location-err');
 			}
 
 			watchID = navigator.geolocation.watchPosition(function(e){
@@ -13631,16 +13627,18 @@ window.aeromap = {
 
 				aeromap.showPosition();
 			}, function(e){
-				if(!aeromap.elements.locationNotFound.classList.contains('show')) aeromap.elements.locationNotFound.classList.add('show');
+				if(!aeromap.elements.stats.classList.contains('location-err')) aeromap.elements.stats.classList.add('location-err');
+				//if(!aeromap.elements.locationNotFound.classList.contains('show')) aeromap.elements.locationNotFound.classList.add('show');
 			});
 			
 		}else{
-			if(!this.elements.locationFail.classList.contains('show')) this.elements.locationFail.classList.add('show');
+			//if(!this.elements.locationFail.classList.contains('show')) this.elements.locationFail.classList.add('show');
 		}
 	},
 
 	showPosition: function(){
 		if(this.initialFind) this.map.panTo(L.latLng([this.latitude, this.longitude]));
+		if(this.elements.stats.classList.contains('location-err')) this.elements.classList.remove('location-err');
 		this.initialFind = false;
 
 		this.getCity();
