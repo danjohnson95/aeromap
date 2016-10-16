@@ -26,6 +26,35 @@ body{
 		display: none !important;
 	}
 
+	.buttons{
+		position: absolute;
+		right: 10px;
+		bottom: 160px;
+		transition: bottom 400ms;
+
+		button{
+			padding: 0;
+			margin: 0;
+			height: 32px;
+			padding: 5px;
+			display: block;
+			margin:0 0 0 5px;
+			border-radius: 5px;
+			display: inline-block;
+			background-color: #fff;
+			border: 1px solid rgba(0,0,0,0.1);
+			-webkit-appearance: none !important;
+			outline: 0;
+			img{
+				width: 20px;
+			}
+		}
+	}
+
+	&.location-err .buttons{
+		bottom: 190px;
+	}
+
 	#map-outer{
 		position: fixed;
 		width: 100%;
@@ -71,6 +100,10 @@ body{
 		}
 	}
 
+	&.location-err #stats{
+		height: 180px;
+	}
+
 	#stats{
 		position: fixed;
 		width: 100%;
@@ -84,9 +117,7 @@ body{
 		overflow: hidden;
 		transition: height 400ms;
 
-		&.location-err{
-			height: 180px;
-		}
+
 
 		@media screen and (min-width: $medium-break){
 			width: 350px;
@@ -120,27 +151,7 @@ body{
 					font-size: 18px;
 				}
 
-				.buttons{
-					position: absolute;
-					right: 10px;
-					bottom: -2px;
-					button{
-						padding: 0;
-						margin: 0;
-						height: 24px;
-						display: block;
-						margin: 5px 0;
-						border-radius: 0;
-						-webkit-appearance: none !important;
-						img{
-							width: 20px;
-						}
-					}
-				}
-
 			}
-
-
 
 			.value{
 				font-weight: bold;
@@ -230,11 +241,11 @@ body{
 
 		}
 
-	&.location-err #location-not-found{
-		bottom: 0;
-		visibility: visible;
 	}
 
+	&.location-err #stats #location-not-found{
+		bottom: 0;
+		visibility: visible;
 	}
 }
 

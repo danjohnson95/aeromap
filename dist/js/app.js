@@ -13571,8 +13571,7 @@ window.aeromap = {
 
 	elements: {
 		stats: null,
-		locationNotFound: null,
-		locationFail: null,
+		body: null,
 		retryBtn: null,
 		altitude: null,
 		heading: null,
@@ -13593,6 +13592,7 @@ window.aeromap = {
 
 	getElements: function(){
 		this.elements.stats = document.getElementById('stats');
+		this.elements.body = document.getElementsByTagName('body')[0];
 		this.elements.mapLoading = document.getElementById('mapload');
 		this.elements.retryBtn = stats.querySelector('.retry-position');
 		this.elements.altitude = stats.querySelector('.altitude .value');
@@ -13617,7 +13617,7 @@ window.aeromap = {
 				for(i=0;i<elements.length;i++){
 					this.resetValue(elements[i]);
 				}
-				if(this.elements.stats.classList.contains('location-err')) this.elements.classList.remove('location-err');
+				if(this.elements.body.classList.contains('location-err')) this.elements.body.classList.remove('location-err');
 			}
 
 			watchID = navigator.geolocation.watchPosition(function(e){
@@ -13628,8 +13628,7 @@ window.aeromap = {
 
 				aeromap.showPosition();
 			}, function(e){
-				if(!aeromap.elements.stats.classList.contains('location-err')) aeromap.elements.stats.classList.add('location-err');
-				aeromap.elements.stats.querySelector('#location-not-found .timer').innerHTML = 5;
+				if(!aeromap.elements.body.classList.contains('location-err')) aeromap.elements.body.classList.add('location-err');
 				this.resetTimer = setTimeout(aeromap.tryLocation, 5000);
 				//if(!aeromap.elements.locationNotFound.classList.contains('show')) aeromap.elements.locationNotFound.classList.add('show');
 			});
@@ -13771,10 +13770,6 @@ document.addEventListener("searchLoaded", function(e){
 
 document.addEventListener("citiesLoaded", function(e){
 	aeromap.getCity();
-});
-
-aeromap.elements.retryBtn.addEventListener('click', function(e){
-	aeromap.tryLocation(false);
 });
 
 window.addEventListener('deviceorientation', function(e) {
