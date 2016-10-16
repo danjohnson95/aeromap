@@ -5,6 +5,7 @@ dist/css/app.css
 dist/fonts/Raleway-Medium.ttf
 dist/fonts/Raleway-Regular.ttf
 dist/img/error.svg
+dist/img/location.svg
 dist/img/marker.png
 dist/img/retry.svg
 dist/img/settings.svg
@@ -22,4 +23,4 @@ NETWORK:
 SETTINGS:
 prefer-online
 
-# hash: bd88ebc32a4a2bc5c803de077eb34cba07e9399154f96e0a0ea3a21b11ef0060
+# hash: be6841f5b4378d69ed1ff5edad2e277bc59437eb94282a3b9a320c11a3328a4c

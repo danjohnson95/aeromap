@@ -11,6 +11,8 @@
   src: local('Raleway Medium'), local('Raleway-Medium'), url(/dist/fonts/Raleway-Medium.ttf) format('truetype');
 }
 
+$medium-break: 600px;
+
 body{
 	margin: 0;
 	font-family: 'Raleway', sans-serif;
@@ -32,9 +34,40 @@ body{
 		top: 0;
 		overflow: hidden;
 
+		#mapload{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			background-color: #51526f;
+			text-align: center;
+			padding: 50% 0;
+			box-sizing: border-box;
+			display: none;
+			&.show{
+				display: block;
+			}
+			.spinner{
+				width:75px;
+				height: 75px;
+				border:4px solid transparent;
+				border-top-color: rgba(0,0,0,0.15);
+				border-left-color: rgba(0,0,0,0.15);
+				display: inline-block;
+				margin: 0 auto;
+				border-radius: 50%;
+				animation: spinner 400ms linear infinite;
+			}
+		}
+
 		#map{
 			height: 100%;
 			background-color: #51526f;
+		}
+
+		@media screen and (min-width: $medium-break){
+			height: 100%;		
 		}
 	}
 
@@ -50,6 +83,11 @@ body{
 		border-radius: 5px 5px 0 0;
 		overflow: hidden;
 
+		@media screen and (min-width: $medium-break){
+			width: 350px;
+			margin-left: 20px;
+		}
+
 		.box{
 			width:33.333%;
 			padding: 1em;
@@ -63,9 +101,28 @@ body{
 			&.city{
 				width: 100%;
 				border-top: 1px solid rgba(0,0,0,0.1);
+				position: relative;
+
 				.value{
 					font-size: 18px;
 				}
+
+				.buttons{
+					position: absolute;
+					right: 10px;
+					bottom: -2px;
+					button{
+						padding: 0;
+						margin: 0;
+						height: 24px;
+						display: block;
+						margin: 5px 0;
+						img{
+							width: 20px;
+						}
+					}
+				}
+
 			}
 
 			small{
@@ -113,9 +170,6 @@ body{
 				font-weight: bold;
 				color: rgba(0,0,0,0.6);
 			}
-		}
-
-		@media screen and (max-width: 500px){
 		}
 
 		#location-not-found, #location-fail{

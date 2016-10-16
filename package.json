@@ -24,6 +24,7 @@
     "browserify": "^13.1.0",
     "del": "^2.2.2",
     "gulp": "^3.9.1",
+    "gulp-favicons": "^2.2.6",
     "gulp-jsonminify": "^1.0.0",
     "gulp-manifest": "^0.1.1",
     "gulp-sass": "^2.3.2",

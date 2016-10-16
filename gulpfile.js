@@ -8,6 +8,7 @@ var gulp 		= require('gulp');
 	fs 			= require('fs'),
 	del 		= require('del'),
 	manifest 	= require('gulp-manifest'),
+	favicons 	= require('gulp-favicons'),
 
 	i 			= './src',
 	o 			= './dist',
@@ -34,7 +35,7 @@ var gulp 		= require('gulp');
 		return b.bundle()
 	      .pipe(source('app.js'))
 	      .pipe(buffer())
-	      .pipe(uglify())
+	      //.pipe(uglify())
 	      .pipe(gulp.dest(o+'/js'));
 	},
 
@@ -53,6 +54,29 @@ var gulp 		= require('gulp');
 		return gulp.src(imgFiles, {base: i+'/img'})
 			.pipe(gulp.dest(o+'/img'));
 	},
+
+	faviconTask = function(){
+		return gulp.src(iconFiles).pipe(favicons({
+			appName: 'aeromap',
+			appDescription: 'An offline-accessible world map with your GPS location plotted on, so you can see where you are during a flight',
+			developerName: 'Dan Johnson',
+			developerURL: 'http://danj.eu',
+			background: '#51526f',
+			path: 'src/img/icons',
+			url: 'https://aeromap.xyz',
+			display: 'standalone',
+			orientation: 'portrait',
+			start_url: 'index.html',
+			version: 0.1,
+			logging: false,
+			online: false,
+			html: 'index.html',
+			pipeHTML: true,
+			replace: true
+		}))
+		.on('error', logError)
+		.pipe(gulp.dest('./'));
+	}
 
 	watchTask = function(){
 		gulp.watch(sassFiles, ['sass']);
@@ -87,6 +111,7 @@ var gulp 		= require('gulp');
 	gulp.task('fonts', ['manifest'], fontsTask);
 	gulp.task('json', ['manifest'], jsonTask);
 	gulp.task('img', ['manifest'], imgTask);
+	gulp.task('favicons', ['manifest'], faviconTask);
 	gulp.task('manifest', rebuildManifest);
 	gulp.task('rebuild', ['clean', 'build']);
 	gulp.task('clean', clean);
