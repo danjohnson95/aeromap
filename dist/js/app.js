@@ -13549,18 +13549,18 @@ var functions = require('./functions.js');
 
 var geoJsonLoaded = false;
 var citiesLoaded = false;
-var initialFind = false;
 var icon = null;
 
 var lastCompassHeading = 361;
 
 window.aeromap = {
 
-	initialFind: false,
+	initialFind: true,
 	map: null,
 	first: true,
 	watchID: null,
 	cities: null,
+	planeIcon: null,
 
 	heading: null,
 	latitude: null,
@@ -13577,13 +13577,22 @@ window.aeromap = {
 		heading: null,
 		speed: null,
 		city: null,
-		mapLoading: null
+		mapLoading: null,
+		locationBtn: null,
+		settingsBtn: null
 	},
 
 	init: function(){
 		this.map = L.map('map', {
 			center: [51.505, -0.09],
 			zoom: 4
+		});
+
+		this.planeIcon = L.icon({
+		    iconUrl: 'https://aeromap.xyz/marker-icon.png',
+		    iconRetinaUrl: 'https://aeromap.xyz/marker-icon.png',
+		    iconSize: L.point(30, 30)
+		    //iconAnchor: [15, 15]
 		});
 
 		this.getElements();
@@ -13594,11 +13603,14 @@ window.aeromap = {
 		this.elements.stats = document.getElementById('stats');
 		this.elements.body = document.getElementsByTagName('body')[0];
 		this.elements.mapLoading = document.getElementById('mapload');
+		this.elements.buttons = this.elements.body.querySelector('.buttons');
 		this.elements.retryBtn = stats.querySelector('.retry-position');
 		this.elements.altitude = stats.querySelector('.altitude .value');
 		this.elements.heading = stats.querySelector('.heading .value');
 		this.elements.speed = stats.querySelector('.speed .value');
 		this.elements.city = stats.querySelector('.city .value');
+		this.elements.locationBtn = this.elements.buttons.querySelector('.move-map');
+		this.elements.settingsBtn = this.elements.buttons.querySelector('.settings');
 	},
 
 	tryLocation: function(){
@@ -13632,7 +13644,6 @@ window.aeromap = {
 				this.resetTimer = setTimeout(aeromap.tryLocation, 5000);
 				//if(!aeromap.elements.locationNotFound.classList.contains('show')) aeromap.elements.locationNotFound.classList.add('show');
 			});
-			
 		}else{
 			//if(!this.elements.locationFail.classList.contains('show')) this.elements.locationFail.classList.add('show');
 		}
@@ -13645,12 +13656,12 @@ window.aeromap = {
 
 		this.getCity();
 
-		icon = L.marker([
-					this.latitude, 
-					this.longitude
-				], {
-					icon: planeIcon, 
-					rotationOrigin: 'center center'
+		L.marker([
+			this.latitude, 
+			this.longitude
+		], {
+			icon: this.planeIcon, 
+			//rotationOrigin: 'center center'
 		}).addTo(this.map);
 
 		if(this.altitude === null){
@@ -13703,7 +13714,7 @@ window.aeromap = {
 	    	}
 	  	}
 
-	  return this.cities[closest][0]+", "+this.cities[closest][3];
+	  return this.cities[closest][0];
 	}
 };
 
@@ -13721,11 +13732,6 @@ var style = {
 	fillOpacity: 0.15
 };
 
-var planeIcon = L.icon({
-    iconUrl:'marker.png',
-    iconSize: [30, 30],
-    iconAnchor: [15, 15]
-});
 
 // var geodesic = L.geodesic([], {
 // 	weight: 2,
@@ -13741,7 +13747,7 @@ functions.loadJSON('/dist/json/geojson_small.json', function(e){
     document.dispatchEvent(new CustomEvent("mapLoaded"));
 });
 
-functions.loadJSON('/dist/json/capitol.json', function(e){
+functions.loadJSON('/dist/json/majorcities.json', function(e){
 	citiesLoaded = true;
 	aeromap.cities = e;
 	document.dispatchEvent(new CustomEvent("citiesLoaded"));
@@ -13759,6 +13765,10 @@ functions.loadJSON('/dist/json/airports.json', function(e){
 // 		new L.LatLng(33.82, -118.38)
 // 	]
 // ]);
+// 
+aeromap.elements.locationBtn.addEventListener('click', function(){
+	aeromap.map.setView(new L.LatLng(aeromap.latitude, aeromap.longitude), 4, {animate: true});
+});
 
 document.addEventListener('mapLoaded', function(e){
 	if(aeromap.elements.mapLoading.classList.contains('show')) aeromap.elements.mapLoading.classList.remove('show');

@@ -8,7 +8,7 @@ var gulp 		= require('gulp');
 	fs 			= require('fs'),
 	del 		= require('del'),
 	manifest 	= require('gulp-manifest'),
-	favicons 	= require('gulp-favicons'),
+	//favicons 	= require('gulp-favicons'),
 
 	i 			= './src',
 	o 			= './dist',
@@ -56,7 +56,7 @@ var gulp 		= require('gulp');
 	},
 
 	faviconTask = function(){
-		return gulp.src(iconFiles).pipe(favicons({
+		/*return gulp.src(iconFiles).pipe(favicons({
 			appName: 'aeromap',
 			appDescription: 'An offline-accessible world map with your GPS location plotted on, so you can see where you are during a flight',
 			developerName: 'Dan Johnson',
@@ -76,7 +76,8 @@ var gulp 		= require('gulp');
 		}))
 		.on('error', logError)
 		.pipe(gulp.dest('./'));
-	}
+		*/
+	},
 
 	watchTask = function(){
 		gulp.watch(sassFiles, ['sass']);

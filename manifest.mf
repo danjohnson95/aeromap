@@ -12,7 +12,10 @@ dist/img/settings.svg
 dist/js/app.js
 dist/json/airports.json
 dist/json/capitol.json
+dist/json/cities.json
 dist/json/geojson_small.json
+dist/json/majorcities.json
+dist/json/test.php
 index.html
 favicon.ico
 marker.png
@@ -23,4 +26,4 @@ NETWORK:
 SETTINGS:
 prefer-online
 
-# hash: 9ccea2aa513a536a4da6f1f6c0367b2dec1062387f86af5b24886d5a96e0977a
+# hash: 9f615df672131f92780cd21319b8b8db660594e4ef0da4e01f20c2460bf3ee7a
