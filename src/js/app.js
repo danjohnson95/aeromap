@@ -9,6 +9,7 @@ var icon = null;
 
 var lastCompassHeading = 361;
 
+
 window.aeromap = {
 
 	initialFind: true,
@@ -17,6 +18,7 @@ window.aeromap = {
 	watchID: null,
 	cities: null,
 	planeIcon: null,
+	mapLoaded: false,
 
 	heading: null,
 	latitude: null,
@@ -41,15 +43,24 @@ window.aeromap = {
 	init: function(){
 		this.map = L.map('map', {
 			center: [51.505, -0.09],
-			zoom: 4
+			zoom: 4,
+			scrollWheelZoom:'center'
 		});
 
 		this.planeIcon = L.icon({
-		    iconUrl: 'https://aeromap.xyz/marker-icon.png',
-		    iconRetinaUrl: 'https://aeromap.xyz/marker-icon.png',
-		    iconSize: L.point(30, 30)
-		    //iconAnchor: [15, 15]
+		    iconUrl: '/marker-icon.png',
+		    retinaIconUrl: '/marker@2.png',
+		    iconAnchor: [15, 15],
+		    iconSize: [30, 30]
 		});
+
+
+		// L.marker(new L.LatLng(51,0), {
+		// 	icon: this.planeIcon, 
+		// 	//rotationOrigin: 'center center'
+		// }).addTo(this.map);
+
+
 
 		this.getElements();
 		this.tryLocation();
@@ -112,13 +123,15 @@ window.aeromap = {
 
 		this.getCity();
 
-		L.marker([
-			this.latitude, 
-			this.longitude
-		], {
-			icon: this.planeIcon, 
-			//rotationOrigin: 'center center'
-		}).addTo(this.map);
+		if(this.mapLoaded){
+			L.marker([
+				this.latitude, 
+				this.longitude
+			], {
+				icon: this.planeIcon, 
+				//rotationOrigin: 'center center'
+			}).addTo(this.map);
+		}
 
 		if(this.altitude === null){
 			this.valueFailed(this.elements.altitude); 
@@ -201,6 +214,13 @@ functions.loadJSON('/dist/json/geojson_small.json', function(e){
         style: style
     }).addTo(aeromap.map);
     document.dispatchEvent(new CustomEvent("mapLoaded"));
+    aeromap.mapLoaded = true;
+    if(aeromap.latitude){
+		L.marker([aeromap.latitude, aeromap.longitude], {
+			icon: aeromap.planeIcon, 
+			rotationOrigin: 'center center'
+		}).addTo(aeromap.map);
+    }
 });
 
 functions.loadJSON('/dist/json/majorcities.json', function(e){

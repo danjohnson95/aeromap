@@ -14,11 +14,11 @@ dist/json/airports.json
 dist/json/capitol.json
 dist/json/cities.json
 dist/json/geojson_small.json
+dist/json/geojson_small_old.json
 dist/json/majorcities.json
 dist/json/test.php
 index.html
 favicon.ico
-marker.png
 
 NETWORK:
 *
@@ -26,4 +26,4 @@ NETWORK:
 SETTINGS:
 prefer-online
 
-# hash: 9f615df672131f92780cd21319b8b8db660594e4ef0da4e01f20c2460bf3ee7a
+# hash: 82816bcf5ffc670c9301b437c76d5c334798671f107573a4af0da68e1ec1f6f4
