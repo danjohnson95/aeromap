@@ -6,6 +6,8 @@ dist/fonts/Raleway-Medium.ttf
 dist/fonts/Raleway-Regular.ttf
 dist/img/error.svg
 dist/img/location.svg
+dist/img/marker-icon-2.png
+dist/img/marker-icon.png
 dist/img/marker.png
 dist/img/retry.svg
 dist/img/settings.svg
@@ -48,4 +50,4 @@ NETWORK:
 SETTINGS:
 prefer-online
 
-# hash: 282bee246fb25b4015e548d81d2cab1ca8b242b796220ca851d1f23feeca4333
+# hash: f48d5624284c829c0ee7073dd236b83bd5d8873642e52cea990c5555da49810d

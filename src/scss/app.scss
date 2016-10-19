@@ -12,15 +12,23 @@
 }
 
 $medium-break: 600px;
+$background-color: #51526f;
+$spinner-anim: spinner 400ms linear infinite;
+$warning-color: rgb(251, 191, 81);
+$font-family: 'Raleway', sans-serif;
+$font-size: 16px;
 
 body{
+
 	margin: 0;
-	font-family: 'Raleway', sans-serif;
+	font-family: $font-family;
+	font-size: $font-size;
 	height: 100%;
+	-webkit-font-smoothing: antialiased;
 
 	input, button, select{
-		font-family: 'Raleway';
-		font-size: 16px;
+		font-family: $font-family;
+		font-size: $font-size;
 	}
 
 	.hide{
@@ -62,6 +70,116 @@ body{
 		bottom: 190px;
 	}
 
+	#settings-overlay{
+		position: fixed;
+		width:100%;
+		height: 100%;
+		background-color: rgba(0,0,0,0.6);
+		z-index: 9999998;
+		visibility: hidden;
+		opacity: 0;
+		transition: all 400ms;
+	}
+
+	&.show-settings{
+		#settings-overlay, #settings-modal{
+			visibility: visible;
+			opacity: 1;
+		}
+		#settings-modal{
+			transform: translate3d(0,0,0);
+		}
+	}
+
+	#settings-modal{
+		position: fixed;
+		top: 10%;
+		bottom: 10%;
+		left: 10%;
+		right: 10%;
+		background-color: #fafafa;
+		border-radius: 5px;
+		z-index: 9999999;
+		box-shadow: 0 2px 25px 2px rgba(0,0,0,0.4);
+		overflow:hidden;
+		visibility: hidden;
+		opacity: 0;
+		transform: translate3d(0, 200px, 0);
+		transition: all 400ms;
+
+		.modal-header{
+			padding: 1em;
+			text-align: center;
+			color: rgba(0,0,0,0.5);
+			font-weight: 500;
+			.close-btn{
+				position: absolute;
+				cursor:pointer;
+				font-size: 2em;
+				right: 0;
+				top: 0;
+				padding: 10px 15px;
+				height: 30px;
+				line-height: .8;
+				&:hover{
+					color: rgba(0,0,0,0.65);
+				}
+			}
+		}
+
+		ul{
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			background-color: #fff;
+			border-top: 1px solid rgba(0,0,0,0.1);
+			border-bottom: 1px solid rgba(0,0,0,0.1);
+			margin: 20px 0;
+			li{
+				padding: 5px 15px;
+				&.divider{
+					background-color: rgba(0,0,0,0.1);
+					text-transform: uppercase;
+					font-weight: bold;
+					font-size: 10px;
+					color: rgba(0,0,0,0.5);
+				}
+
+				&.half{
+					display: inline-block;
+					width: 45%;
+					box-sizing: border-box;
+					text-align: center;
+					text-transform: uppercase;
+					font-size: 11px;
+					strong, span{
+						display: block;
+						width: auto;
+					}
+				}
+
+				label{
+					display: block;
+
+					span{
+						display: inline-block;
+						width: 100px;
+					}
+					
+					select{
+						margin: 0;
+						padding: 0;
+						border: 0;
+						-webkit-appearance: none !important;
+						background-color: transparent;
+						outline: 0;
+					}
+				}
+			}
+		}
+
+	}
+
 	#map-outer{
 		position: fixed;
 		width: 100%;
@@ -76,7 +194,7 @@ body{
 			height: 100%;
 			top: 0;
 			left: 0;
-			background-color: #51526f;
+			background-color: $background-color;
 			text-align: center;
 			padding: 50% 0;
 			box-sizing: border-box;
@@ -93,13 +211,13 @@ body{
 				display: inline-block;
 				margin: 0 auto;
 				border-radius: 50%;
-				animation: spinner 400ms linear infinite;
+				animation: $spinner-anim;
 			}
 		}
 
 		#map{
 			height: 100%;
-			background-color: #51526f;
+			background-color: $background-color;
 		}
 
 		@media screen and (min-width: $medium-break){
@@ -176,7 +294,7 @@ body{
 						border-top-color: rgba(0,0,0,0.6);
 						border-left-color: rgba(0,0,0,0.6);
 						border-radius: 50%;
-						animation: spinner 400ms linear infinite;
+						animation: $spinner-anim;
 						position: relative;
 						top: 2px;
 					}
@@ -199,42 +317,10 @@ body{
 			}
 		}
 
-		/*#location-not-found, #location-fail{
-			visibility: hidden;
-			opacity: 0;
-			transition: 0.3s opacity;
-			background-color: #fff;
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			padding: 1em;
-			text-align: center;
-			box-sizing: border-box;
-			p{
-				margin: 0;
-				color: rgba(0,0,0,0.7);
-			}
-			button{
-				background-image: url(/dist/img/retry.svg);
-				background-size: 50px;
-				padding-top: 55px;
-				border: 0;
-				background-color: transparent;
-				font-weight: bold;
-				background-repeat: no-repeat;
-				color: #51526f;
-				margin-top: 10px;
-
-			}
-			&.show{
-				visibility: visible;
-				opacity: 1;
-			}
-		}*/
 
 		#location-not-found{
 			visibility: hidden;
-			background-color: rgb(251, 191, 81);
+			background-color: $warning-color;
 			position: absolute;
 			left: 0;
 			bottom: -30px;

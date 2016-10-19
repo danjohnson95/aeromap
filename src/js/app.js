@@ -37,7 +37,9 @@ window.aeromap = {
 		city: null,
 		mapLoading: null,
 		locationBtn: null,
-		settingsBtn: null
+		settingsBtn: null,
+		settingsOverlay: null,
+		settingsModal: null
 	},
 
 	style: {
@@ -84,6 +86,8 @@ window.aeromap = {
 		this.elements.city = stats.querySelector('.city .value');
 		this.elements.locationBtn = this.elements.buttons.querySelector('.move-map');
 		this.elements.settingsBtn = this.elements.buttons.querySelector('.settings');
+		this.elements.settingsOverlay = document.getElementById('settings-overlay');
+		this.elements.settingsModal = document.getElementById('settings-modal');
 	},
 
 	tryLocation: function(){
@@ -268,6 +272,18 @@ functions.loadJSON('/dist/json/airports.json', function(e){
 aeromap.elements.locationBtn.addEventListener('click', function(){
 	aeromap.moveMapToCurrentLocation();
 });
+
+aeromap.elements.settingsBtn.addEventListener('click', function(){
+	if(!aeromap.elements.body.classList.contains('show-settings')) aeromap.elements.body.classList.add('show-settings');
+});
+
+aeromap.elements.settingsOverlay.addEventListener('click', function(){
+	if(aeromap.elements.body.classList.contains('show-settings')) aeromap.elements.body.classList.remove('show-settings');
+});
+
+aeromap.elements.settingsModal.querySelector('.close-btn').addEventListener('click', function(){
+	if(aeromap.elements.body.classList.contains('show-settings')) aeromap.elements.body.classList.remove('show-settings');
+})
 
 document.addEventListener('mapLoaded', function(e){
 	aeromap.hideMapLoading();

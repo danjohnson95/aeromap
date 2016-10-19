@@ -26,6 +26,60 @@
 </head>
 <body>
 
+	<div id="settings-overlay"></div>
+	<div id="settings-modal">
+		<div class="modal-header">
+			aeromap settings
+			<div class="close-btn">&times;</div>
+		</div>
+
+		<ul>
+
+			<li class="divider">Units</li>
+
+			<li>
+				<label>
+					<span>Altitude</span>
+					<select>
+						<option>feet</option>
+						<option>meters</option>
+					</select>
+				</label>
+			</li>
+
+			<li>
+				<label>
+					<span>Speed</span>
+					<select>
+						<option>mph</option>
+						<option>kmh</option>
+					</select>
+				</label>
+			</li>
+
+		</ul>
+
+		<ul>
+			<li class="divider">Route</li>
+
+			<li class="half">
+				<label>
+					<span>Set</span>
+					<strong>Origin<br>Airport</strong>
+				</label>
+			</li>
+
+			<li class="half">
+				<label>
+					<span>Set</span>
+					<strong>Dest.<br>Airport</strong>
+				</label>
+			</li>
+		</ul>
+
+
+	</div>
+
 	<div id="map-outer">
 		<div id="map"></div>
 		<div id="mapload" class="show">
