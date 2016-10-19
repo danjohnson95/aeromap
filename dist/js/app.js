@@ -13547,10 +13547,6 @@ require('Leaflet.Geodesic');
 require('leaflet-rotatedmarker');
 var functions = require('./functions.js');
 
-
-var lastCompassHeading = 361;
-
-
 window.aeromap = {
 
 	initialFind: true,
@@ -13562,7 +13558,6 @@ window.aeromap = {
 	icon: null,
 	mapLoaded: false,
 	path: null,
-
 
 	heading: null,
 	latitude: null,
@@ -13600,6 +13595,11 @@ window.aeromap = {
 		steps: 50
 	},
 
+	convert: {
+		speed: null,
+		altitude: null
+	},
+
 	init: function(){
 		this.map = L.map('map', {
 			center: [51.505, -0.09],
@@ -13614,46 +13614,45 @@ window.aeromap = {
 		    iconSize: [30, 30]
 		});
 
-		this.getElements();
-		this.tryLocation();
+		this.getElements(this.tryLocation);
 	},
 
-	getElements: function(){
+	getElements: function(next){
 		this.elements.stats = document.getElementById('stats');
 		this.elements.body = document.getElementsByTagName('body')[0];
 		this.elements.mapLoading = document.getElementById('mapload');
 		this.elements.buttons = this.elements.body.querySelector('.buttons');
 		this.elements.retryBtn = stats.querySelector('.retry-position');
-		this.elements.altitude = stats.querySelector('.altitude .value');
-		this.elements.heading = stats.querySelector('.heading .value');
-		this.elements.speed = stats.querySelector('.speed .value');
-		this.elements.city = stats.querySelector('.city .value');
+		this.elements.altitude = stats.querySelector('.altitude');
+		this.elements.heading = stats.querySelector('.heading');
+		this.elements.speed = stats.querySelector('.speed');
+		this.elements.city = stats.querySelector('.city');
 		this.elements.locationBtn = this.elements.buttons.querySelector('.move-map');
 		this.elements.settingsBtn = this.elements.buttons.querySelector('.settings');
 		this.elements.settingsOverlay = document.getElementById('settings-overlay');
 		this.elements.settingsModal = document.getElementById('settings-modal');
+		next();
 	},
 
 	tryLocation: function(){
 		if(navigator.geolocation){
-			
-			if(!this.first){
+			if(!aeromap.first){
 				navigator.geolocation.clearWatch(this.watchID);
 				var elements = [
-					this.elements.altitude, 
-					this.elements.heading, 
-					this.elements.speed, 
-					this.elements.city
+					aeromap.elements.altitude, 
+					aeromap.elements.heading, 
+					aeromap.elements.speed, 
+					aeromap.elements.city
 				];
 
 				for(i=0;i<elements.length;i++){
-					this.resetValue(elements[i]);
+					aeromap.resetValue(elements[i]);
 				}
 
-				if(this.elements.body.classList.contains('location-err')) this.elements.body.classList.remove('location-err');
+				if(aeromap.elements.body.classList.contains('location-err')) aeromap.elements.body.classList.remove('location-err');
 			}
 
-			this.watchID = navigator.geolocation.watchPosition(function(e){
+			aeromap.watchID = navigator.geolocation.watchPosition(function(e){
 				aeromap.latitude = e.coords.latitude;
 				aeromap.longitude = e.coords.longitude;
 				aeromap.altitude = e.coords.altitude;
@@ -13682,19 +13681,53 @@ window.aeromap = {
 
 		if(this.altitude === null){
 			this.valueFailed(this.elements.altitude); 
-		}else{ 
+		}else{
+			if(this.convert.altitude){
+				this.altitude = this.convertAltitude();
+				this.showUnit(this.elements.altitude, this.convert.altitude);
+			}
 			this.showValue(this.elements.altitude, this.altitude, true);
 		}
 
 		if(this.speed === null){
 			this.valueFailed(this.elements.speed); 
-		}else{ 
+		}else{
+			if(this.convert.speed){
+				this.speed = this.convertSpeed();
+				this.showUnit(this.elements.speed, this.convert.speed);
+			}
 			this.showValue(this.elements.speed, this.speed, true);
 		}
 	},
 
 	removeLocationErr: function(){
 		if(this.elements.body.classList.contains('location-err')) this.elements.body.classList.remove('location-err');
+	},
+
+	convertSpeed: function(){
+		switch(this.convert.speed){
+			case 'mph':
+				return this.speed * 2.23694;
+			case 'kmh':
+				return this.speed * 3.6;
+			case 'mach':
+				return this.speed * 0.00130332;
+			default:
+				return this.speed;
+		}
+	},
+
+	convertAltitude: function(){
+		switch(this.convert.altitude){
+			case 'feet':
+				return this.altitude;
+			case 'meters':
+				return this.altitude * 0.3048;
+			case 'miles':
+				return this.altitude * 0.000189394;
+			default:
+				return this.altitude;
+		}
 	},
 
 	getCity: function(){
@@ -13705,21 +13738,34 @@ window.aeromap = {
 	},
 
 	valueFailed: function(element){
+		unit = element.querySelector('.unit');
+		element = element.querySelector('.value');
+		if(!unit.classList.contains('hide')) unit.classList.add('hide');
 		if(element.classList.contains('loading')) element.classList.remove('loading');
 		if(!element.classList.contains('failed')) element.classList.add('failed');
 		element.innerHTML = "";
 	},
 
 	resetValue: function(element){
+		unit = element.querySelector('.unit');
+		element = element.querySelector('.value');
+		if(!unit.classList.contains('hide')) unit.classList.add('hide');
 		if(!element.classList.contains('loading')) element.classList.add('loading');
 		if(element.classList.contains('failed')) element.classList.remove('failed');
 		element.innerHTML = "";
 	},
 
 	showValue: function(element, value, flatten){
+		element = element.querySelector('.value');
 		if(element.classList.contains('loading')) element.classList.remove('loading');
 		if(element.classList.contains('failed')) element.classList.remove('failed');
-		element.innerHTML = (flatten ? Math.floor(value) : value);
+		element.innerHTML = (flatten ? value.toFixed(1) : value);
+	},
+
+	showUnit: function(element, value){
+		element = element.querySelector('.unit');
+		if(element.classList.contains('hide')) element.classList.remove('hide');
+		element.innerHTML = value;
 	},
 
 	nearestCity: function(){
@@ -13827,7 +13873,17 @@ aeromap.elements.settingsOverlay.addEventListener('click', function(){
 
 aeromap.elements.settingsModal.querySelector('.close-btn').addEventListener('click', function(){
 	if(aeromap.elements.body.classList.contains('show-settings')) aeromap.elements.body.classList.remove('show-settings');
-})
+});
+
+aeromap.elements.settingsModal.querySelector('#altitude-unit').addEventListener('change', function(){
+	aeromap.convert.altitude = this.value;
+	if(aeromap.hasLocation) aeromap.showPosition();
+});
+
+aeromap.elements.settingsModal.querySelector('#speed-unit').addEventListener('change', function(){
+	aeromap.convert.speed = this.value;
+	if(aeromap.hasLocation) aeromap.showPosition();
+});
 
 document.addEventListener('mapLoaded', function(e){
 	aeromap.hideMapLoading();
@@ -13842,7 +13898,7 @@ document.addEventListener("citiesLoaded", function(e){
 });
 
 window.addEventListener('deviceorientation', function(e) {
-	aeromap.outputHeading(e);
+	if(e.webkitCompassHeading != aeromap.heading) aeromap.outputHeading(e);
 }, false);
 
 setTimeout(function(){
