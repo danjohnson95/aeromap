@@ -13598,14 +13598,6 @@ window.aeromap = {
 		    iconSize: [30, 30]
 		});
 
-
-		// L.marker(new L.LatLng(51,0), {
-		// 	icon: this.planeIcon, 
-		// 	//rotationOrigin: 'center center'
-		// }).addTo(this.map);
-
-
-
 		this.getElements();
 		this.tryLocation();
 	},
@@ -13673,7 +13665,7 @@ window.aeromap = {
 				this.longitude
 			], {
 				icon: this.planeIcon, 
-				//rotationOrigin: 'center center'
+				rotationOrigin: 'center center'
 			}).addTo(this.map);
 		}
 

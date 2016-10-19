@@ -8,13 +8,14 @@ var gulp 		= require('gulp');
 	fs 			= require('fs'),
 	del 		= require('del'),
 	manifest 	= require('gulp-manifest'),
+	concat		= require('gulp-concat'),
 	//favicons 	= require('gulp-favicons'),
 
 	i 			= './src',
 	o 			= './dist',
 	npm			= './node_modules',
 	buildTime	= new Date().getTime(),
-	sassFiles 	= [i+'/scss/**/*.scss'],
+	sassFiles 	= [npm+'/leaflet/dist/leaflet.css', i+'/scss/**/*.scss'],
 	jsFiles 	= [i+'/js/app.js'],
 	fontFiles 	= i+'/fonts/*',
 	jsonFiles 	= [i+'/json/*'],
@@ -24,6 +25,7 @@ var gulp 		= require('gulp');
 	sassTask = function(){
 		return gulp.src(sassFiles)
 	    	.pipe(sass({outputStyle: 'compressed'}))
+	    	.pipe(concat('app.css'))
     		.pipe(gulp.dest(o+'/css'));
 	},
 
