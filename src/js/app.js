@@ -133,7 +133,7 @@ window.aeromap = {
 
 		this.getCity();
 
-		if(!this.icon) this.applyMarker();
+		this.applyMarker();
 
 		if(this.altitude === null){
 			this.valueFailed(this.elements.altitude); 
@@ -243,12 +243,13 @@ window.aeromap = {
 	},
 
 	applyMarker: function(){
-		if(this.hasLocation){
+		if(this.hasLocation && !this.icon){
 			this.icon = L.marker([this.latitude, this.longitude], {
 				icon: this.planeIcon,
 				rotationOrigin: 'center center'
 			}).addTo(this.map);
-
+		}else if(this.hasLocation){
+			this.icon.setLatLng([this.latitude, this.longitude]);
 		}
 	},
 
