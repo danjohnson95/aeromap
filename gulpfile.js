@@ -90,7 +90,7 @@ var gulp 		= require('gulp');
 	},
 
 	rebuildManifest = function(){
-		gulp.src(['dist/**/*', 'index.html', 'favicon.ico', 'marker.png'], { base: './'})
+		gulp.src(['dist/**/*', 'index.html', '*.ico', '*.png'], { base: './'})
 	    .pipe(manifest({
 	      hash: true,
 	      preferOnline: true,
