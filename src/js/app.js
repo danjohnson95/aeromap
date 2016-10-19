@@ -138,21 +138,15 @@ window.aeromap = {
 		if(this.altitude === null){
 			this.valueFailed(this.elements.altitude); 
 		}else{
-			if(this.convert.altitude){
-				this.altitude = this.convertAltitude();
-				this.showUnit(this.elements.altitude, this.convert.altitude);
-			}
-			this.showValue(this.elements.altitude, this.altitude, true);
+			this.showUnit(this.elements.altitude, this.convert.altitude);
+			this.showValue(this.elements.altitude, this.convertAltitude(), false);
 		}
 
 		if(this.speed === null){
 			this.valueFailed(this.elements.speed); 
 		}else{
-			if(this.convert.speed){
-				this.speed = this.convertSpeed();
-				this.showUnit(this.elements.speed, this.convert.speed);
-			}
-			this.showValue(this.elements.speed, this.speed, true);
+			this.showUnit(this.elements.speed, this.convert.speed);
+			this.showValue(this.elements.speed, this.convertSpeed(), false);
 		}
 	},
 
@@ -163,26 +157,26 @@ window.aeromap = {
 	convertSpeed: function(){
 		switch(this.convert.speed){
 			case 'mph':
-				return this.speed * 2.23694;
+				return Math.floor(this.speed * 2.23694);
 			case 'kmh':
-				return this.speed * 3.6;
+				return Math.floor(this.speed * 3.6);
 			case 'mach':
-				return this.speed * 0.00130332;
+				return (this.speed * 0.00130332).toFixed(3);
 			default:
-				return this.speed;
+				return (this.speed).toFixed(1);
 		}
 	},
 
 	convertAltitude: function(){
 		switch(this.convert.altitude){
 			case 'feet':
-				return this.altitude;
+				return Math.floor(this.altitude);
 			case 'meters':
-				return this.altitude * 0.3048;
+				return Math.floor(this.altitude * 0.3048);
 			case 'miles':
-				return this.altitude * 0.000189394;
+				return (this.altitude * 0.000189394).toFixed(1);
 			default:
-				return this.altitude;
+				return Math.floor(this.altitude);
 		}
 	},
 
