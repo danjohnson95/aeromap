@@ -13596,8 +13596,8 @@ window.aeromap = {
 	},
 
 	convert: {
-		speed: null,
-		altitude: null
+		speed: "m/s",
+		altitude: "feet"
 	},
 
 	init: function(){
@@ -13759,7 +13759,7 @@ window.aeromap = {
 		element = element.querySelector('.value');
 		if(element.classList.contains('loading')) element.classList.remove('loading');
 		if(element.classList.contains('failed')) element.classList.remove('failed');
-		element.innerHTML = (flatten ? value.toFixed(1) : value);
+		element.innerHTML = (flatten ? Math.floor(value) : value);
 	},
 
 	showUnit: function(element, value){
@@ -13818,7 +13818,7 @@ window.aeromap = {
 	},
 
 	outputHeading: function(e){
-		if(Number.isFinite(e.webkitCompassHeading) && Math.floor(e.webkitCompassHeading) != lastCompassHeading){
+		if(Number.isFinite(e.webkitCompassHeading) && Math.floor(e.webkitCompassHeading) != this.heading){
 			this.heading = Math.floor(e.webkitCompassHeading);
 			this.showValue(this.elements.heading, e.webkitCompassHeading, true);
 			if(this.hasLocation && this.icon) this.icon.setRotationAngle(e.webkitCompassHeading);
@@ -13898,7 +13898,7 @@ document.addEventListener("citiesLoaded", function(e){
 });
 
 window.addEventListener('deviceorientation', function(e) {
-	if(e.webkitCompassHeading != aeromap.heading) aeromap.outputHeading(e);
+	aeromap.outputHeading(e);
 }, false);
 
 setTimeout(function(){
