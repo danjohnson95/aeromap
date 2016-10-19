@@ -48,11 +48,19 @@ window.aeromap = {
 		});
 
 		this.planeIcon = L.icon({
-		    iconUrl: '/marker-icon.png',
-		    retinaIconUrl: '/marker@2.png',
+		    iconUrl: '/dist/img/marker-icon.png',
+		    iconRetinaUrl: '/dist/img/marker-icon-2.png',
 		    iconAnchor: [15, 15],
 		    iconSize: [30, 30]
 		});
+
+			L.marker([
+				51, 
+				0
+			], {
+				icon: this.planeIcon, 
+				rotationOrigin: 'center center'
+			}).addTo(this.map);
 
 		this.getElements();
 		this.tryLocation();
@@ -73,7 +81,6 @@ window.aeromap = {
 	},
 
 	tryLocation: function(){
-		console.log('try again');
 		if(navigator.geolocation){
 			
 			if(!this.first){
@@ -101,16 +108,15 @@ window.aeromap = {
 			}, function(e){
 				if(!aeromap.elements.body.classList.contains('location-err')) aeromap.elements.body.classList.add('location-err');
 				this.resetTimer = setTimeout(aeromap.tryLocation, 5000);
-				//if(!aeromap.elements.locationNotFound.classList.contains('show')) aeromap.elements.locationNotFound.classList.add('show');
 			});
 		}else{
-			//if(!this.elements.locationFail.classList.contains('show')) this.elements.locationFail.classList.add('show');
+			// Location not supported
 		}
 	},
 
 	showPosition: function(){
 		if(this.initialFind) this.map.panTo(L.latLng([this.latitude, this.longitude]));
-		if(this.elements.stats.classList.contains('location-err')) this.elements.classList.remove('location-err');
+		if(this.elements.body.classList.contains('location-err')) this.elements.body.classList.remove('location-err');
 		this.initialFind = false;
 
 		this.getCity();
@@ -182,10 +188,6 @@ window.aeromap = {
 first = true;
 aeromap.init();
 
-// var map = L.map('map', {
-// 	center: [51.505, -0.09],
-// 	zoom: 4
-// });
 var style = {
 	stroke: false,
 	fill: true,
