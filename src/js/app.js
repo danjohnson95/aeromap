@@ -274,10 +274,12 @@ window.aeromap = {
 	},
 
 	outputHeading: function(e){
-		if(Number.isFinite(e.webkitCompassHeading) && Math.floor(e.webkitCompassHeading) != this.heading){
-			this.heading = Math.floor(e.webkitCompassHeading);
-			this.showValue(this.elements.heading, e.webkitCompassHeading, true);
-			if(this.hasLocation && this.icon) this.icon.setRotationAngle(e.webkitCompassHeading);
+		if(Number.isFinite(e.webkitCompassHeading)){
+			if(Math.floor(e.webkitCompassHeading) != this.heading){
+				this.heading = Math.floor(e.webkitCompassHeading);
+				this.showValue(this.elements.heading, e.webkitCompassHeading, true);
+				if(this.hasLocation && this.icon) this.icon.setRotationAngle(e.webkitCompassHeading);
+			}
 		}else{
 			this.valueFailed(this.elements.heading);
 		}
