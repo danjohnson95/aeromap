@@ -13578,7 +13578,8 @@ window.aeromap = {
 		locationBtn: null,
 		settingsBtn: null,
 		settingsOverlay: null,
-		settingsModal: null
+		settingsModal: null,
+		setRouteBtn: null
 	},
 
 	style: {
@@ -13593,6 +13594,17 @@ window.aeromap = {
 		opacity: 1,
 		color: 'white',
 		steps: 50
+	},
+
+	route: {
+		origin: {
+			lat: null,
+			lng: null
+		},
+		dest: {
+			lat: null,
+			lng: null
+		}
 	},
 
 	convert: {
@@ -13631,6 +13643,7 @@ window.aeromap = {
 		this.elements.settingsBtn = this.elements.buttons.querySelector('.settings');
 		this.elements.settingsOverlay = document.getElementById('settings-overlay');
 		this.elements.settingsModal = document.getElementById('settings-modal');
+		this.elements.setRouteBtn = document.getElementById('set-route-btns');
 		next();
 	},
 
@@ -13662,6 +13675,7 @@ window.aeromap = {
 
 			}, function(e){
 				if(!aeromap.elements.body.classList.contains('location-err')) aeromap.elements.body.classList.add('location-err');
+				if(!aeromap.elements.locationBtn.classList.contains('disable')) aeromap.elements.locationBtn.classList.add('disable');
 				aeromap.resetTimer = setTimeout(aeromap.tryLocation, 5000);
 			});
 		}else{
@@ -13669,8 +13683,10 @@ window.aeromap = {
 		}
 	},
 
+
 	showPosition: function(){
 		this.hasLocation = true;
+		if(this.elements.locationBtn.classList.contains('disable')) this.elements.locationBtn.classList.remove('disable');
 		if(this.initialFind) this.moveMapToCurrentLocation();
 		this.initialFind = false;
 		this.removeLocationErr();
@@ -13836,6 +13852,31 @@ window.aeromap = {
 				{animate: true}
 			);
 		}
+	},
+
+	setRoute: function(route){
+		localStorage.route = route;
+		if(!this.path) this.createGeodesic();
+		if(route == 1){
+			this.route.origin.lat = 51.1537;
+			this.route.origin.lng = 0.1821;
+			this.route.dest.lat = 21.0403;
+			this.route.dest.lng = -86.8736;
+		}else{
+			this.route.origin.lat = 21.0403;
+			this.route.origin.lng = -86.8736;
+			this.route.dest.lat = 19.4361;
+			this.route.dest.lng = -99.0719;
+		}
+		this.moveGeodesic();
+		if(aeromap.elements.body.classList.contains('show-settings')) aeromap.elements.body.classList.remove('show-settings');
+	},
+
+	clearRoute: function(){
+		localStorage.route = 0;
+		this.path._path.remove();
+		this.path = null;
+		if(aeromap.elements.body.classList.contains('show-settings')) aeromap.elements.body.classList.remove('show-settings');
 	}
 };
 
@@ -13882,8 +13923,32 @@ aeromap.elements.settingsModal.querySelector('#speed-unit').addEventListener('ch
 	if(aeromap.hasLocation) aeromap.showPosition();
 });
 
+aeromap.elements.setRouteBtn.addEventListener('click', function(e){
+	
+	children = document.getElementsByClassName('set-route');
+	for(i=0;i<children.length;i++){
+		if(children[i].classList.contains('active')) children[i].classList.remove('active');
+	}
+	if(e.target.classList.contains('route-clear')){
+		aeromap.clearRoute();
+	}else{
+		e.target.classList.add('active');
+		aeromap.setRoute(e.target.classList.contains('route-1') ? 1 : 2);
+	}
+	
+});
+
 document.addEventListener('mapLoaded', function(e){
 	aeromap.hideMapLoading();
+	
+	if(localStorage.route == 1 || localStorage.route == 2){
+		aeromap.setRoute(localStorage.route);
+		if(localStorage.route == 1){
+			document.querySelector('#set-route-btns .set-route.route-1').classList.add('active');
+		}else if(localStorage.route == 2){
+			document.querySelector('#set-route-btns .set-route.route-2').classList.add('active');
+		}
+	}
 });
 
 document.addEventListener("searchLoaded", function(e){
