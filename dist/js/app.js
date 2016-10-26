@@ -13609,7 +13609,7 @@ window.aeromap = {
 
 	convert: {
 		speed: "m/s",
-		altitude: "feet"
+		altitude: "ft"
 	},
 
 	init: function(){
@@ -13729,7 +13729,7 @@ window.aeromap = {
 
 	convertAltitude: function(){
 		switch(this.convert.altitude){
-			case 'feet':
+			case 'ft':
 				return Math.floor(this.altitude);
 			case 'meters':
 				return Math.floor(this.altitude * 0.3048);
@@ -13940,7 +13940,7 @@ aeromap.elements.setRouteBtn.addEventListener('click', function(e){
 
 document.addEventListener('mapLoaded', function(e){
 	aeromap.hideMapLoading();
-	
+
 	if(localStorage.route == 1 || localStorage.route == 2){
 		aeromap.setRoute(localStorage.route);
 		if(localStorage.route == 1){
