@@ -1,6 +1,8 @@
 # aeromap
 An offline-accessible world map with your GPS location plotted on, so you can see where you are during a flight.
 
+[Aeromap Screenshot](https://danjohnson.xyz/img/aeromap.jpg)
+
 Use your device's GPS location service to find out where you are when you're on a flight.
 
 ## See it in action
