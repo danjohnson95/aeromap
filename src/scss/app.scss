@@ -36,7 +36,7 @@ body{
 	}
 
 	#homescreen-help{
-		font-size: 12px;
+		font-size: 13px;
 		position: fixed;
 		bottom: 20px;
 		left: 0;
@@ -46,10 +46,18 @@ body{
 		.inner{
 			background-color: #fff;
 			border-radius: 10px;
-			width: 90%;
+			width: 70%;
 			margin: 0 auto;
-			padding: 1em;
+			padding: 1.5em;
 			box-sizing: border-box;
+			ul{
+			    padding: 0 1em;
+    			margin: 5px 0 1em 0;
+			}
+			img.share{
+				width: 35px;
+				vertical-align: middle;
+			}
 			&:after{
 			    content: '';
 			    border-top: 10px solid #fff;

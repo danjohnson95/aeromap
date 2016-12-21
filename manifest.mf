@@ -5,12 +5,14 @@ dist/css/app.css
 dist/fonts/Raleway-Medium.ttf
 dist/fonts/Raleway-Regular.ttf
 dist/img/error.svg
+dist/img/homescreen.png
 dist/img/location.svg
 dist/img/marker-icon-2.png
 dist/img/marker-icon.png
 dist/img/marker.png
 dist/img/retry.svg
 dist/img/settings.svg
+dist/img/share.png
 dist/js/app.js
 dist/json/airports.json
 dist/json/capitol.json
@@ -50,4 +52,4 @@ NETWORK:
 SETTINGS:
 prefer-online
 
-# hash: abcb9703d9458a56a750edd8692f5f47f38d408d2ba3c673b4e089fad5a996d9
+# hash: 3c309d648263faa99fda06ba6266b477a75137d8f8152d13ee961c5aec7ab87f
