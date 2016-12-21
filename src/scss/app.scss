@@ -1,21 +1,8 @@
-@font-face {
-  font-family: 'Raleway';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Raleway'), local('Raleway-Regular'), url(/dist/fonts/Raleway-Regular.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Raleway';
-  font-style: normal;
-  font-weight: 500;
-  src: local('Raleway Medium'), local('Raleway-Medium'), url(/dist/fonts/Raleway-Medium.ttf) format('truetype');
-}
-
 $medium-break: 600px;
 $background-color: #51526f;
 $spinner-anim: spinner 400ms linear infinite;
 $warning-color: rgb(251, 191, 81);
-$font-family: 'Raleway', sans-serif;
+$font-family: 'Helvetica Neue', sans-serif;
 $font-size: 16px;
 
 body{
@@ -35,6 +22,14 @@ body{
 		display: none !important;
 	}
 
+	.leaflet-top{
+		top: 25px;
+	}
+
+	.leaflet-control-attribution{
+		display: none;
+	}
+	
 	#homescreen-help{
 		font-size: 13px;
 		position: fixed;
@@ -324,6 +319,7 @@ body{
 			.value{
 				font-weight: bold;
 				font-size: 20px;
+				color: #45465e;
 				&.loading, &.failed{
 					display: block;
 					text-align: center;
