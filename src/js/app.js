@@ -35,7 +35,8 @@ window.aeromap = {
 		settingsBtn: null,
 		settingsOverlay: null,
 		settingsModal: null,
-		setRouteBtn: null
+		setRouteBtn: null,
+		homescreenHelp: null
 	},
 
 	style: {
@@ -69,6 +70,7 @@ window.aeromap = {
 	},
 
 	init: function(){
+
 		this.map = L.map('map', {
 			center: [51.505, -0.09],
 			zoom: 4,
@@ -83,6 +85,8 @@ window.aeromap = {
 		});
 
 		this.getElements(this.tryLocation);
+
+		this.toggleHomescreenHelp();
 	},
 
 	getElements: function(next){
@@ -100,6 +104,7 @@ window.aeromap = {
 		this.elements.settingsOverlay = document.getElementById('settings-overlay');
 		this.elements.settingsModal = document.getElementById('settings-modal');
 		this.elements.setRouteBtn = document.getElementById('set-route-btns');
+		this.elements.homescreenHelp = document.getElementById('homescreen-help');
 		next();
 	},
 
@@ -333,6 +338,26 @@ window.aeromap = {
 		this.path._path.remove();
 		this.path = null;
 		if(aeromap.elements.body.classList.contains('show-settings')) aeromap.elements.body.classList.remove('show-settings');
+	},
+
+	inAppMode: function(){
+		if (("standalone" in window.navigator) && window.navigator.standalone){
+			return true;
+		}else{
+			return false;
+		}
+	},
+
+	toggleHomescreenHelp: function(){
+		if(!this.inAppMode()){
+			console.log('not in app mode');
+			if(this.elements.homescreenHelp.classList.contains('hide')) this.elements.homescreenHelp.classList.remove('hide');
+			if(!this.elements.body.classList.contains('show-overlay')) this.elements.body.classList.add('show-overlay');
+		}else{
+			console.log('app mode!');
+			if(!this.elements.homescreenHelp.classList.contains('hide')) this.elements.homescreenHelp.classList.add('hide');
+			if(this.elements.body.classList.contains('show-overlay')) this.elements.body.classList.remove('show-overlay');
+		}
 	}
 };
 
