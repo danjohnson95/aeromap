@@ -341,7 +341,7 @@ window.aeromap = {
 	},
 
 	inAppMode: function(){
-		if (("standalone" in window.navigator) && window.navigator.standalone){
+		if (("standalone" in window.navigator) && window.navigator.standalone || !("standalone" in window.navigator)){
 			return true;
 		}else{
 			return false;
