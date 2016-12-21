@@ -13785,7 +13785,7 @@ window.aeromap = {
 		this.elements.settingsBtn = this.elements.buttons.querySelector('.settings');
 		this.elements.settingsOverlay = document.getElementById('settings-overlay');
 		this.elements.settingsModal = document.getElementById('settings-modal');
-		this.elements.setRouteBtn = document.getElementById('set-route-btns');
+		//this.elements.setRouteBtn = document.getElementById('set-route-btns');
 		this.elements.homescreenHelp = document.getElementById('homescreen-help');
 		next();
 	},
@@ -14086,7 +14086,7 @@ aeromap.elements.settingsModal.querySelector('#speed-unit').addEventListener('ch
 	if(aeromap.hasLocation) aeromap.showPosition();
 });
 
-aeromap.elements.setRouteBtn.addEventListener('click', function(e){
+/*aeromap.elements.setRouteBtn.addEventListener('click', function(e){
 	
 	children = document.getElementsByClassName('set-route');
 	for(i=0;i<children.length;i++){
@@ -14099,19 +14099,19 @@ aeromap.elements.setRouteBtn.addEventListener('click', function(e){
 		aeromap.setRoute(e.target.classList.contains('route-1') ? 1 : 2);
 	}
 	
-});
+});*/
 
 document.addEventListener('mapLoaded', function(e){
 	aeromap.hideMapLoading();
 
-	if(localStorage.route == 1 || localStorage.route == 2){
+	/*if(localStorage.route == 1 || localStorage.route == 2){
 		aeromap.setRoute(localStorage.route);
 		if(localStorage.route == 1){
 			document.querySelector('#set-route-btns .set-route.route-1').classList.add('active');
 		}else if(localStorage.route == 2){
 			document.querySelector('#set-route-btns .set-route.route-2').classList.add('active');
 		}
-	}
+	}*/
 });
 
 document.addEventListener("searchLoaded", function(e){
