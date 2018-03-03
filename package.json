@@ -4,7 +4,9 @@
   "description": "An offline-accessible world map with your GPS location plotted on, so you can see where you are during a flight",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "build": "webpack-cli",
+    "start": "node dev/serve.js"
   },
   "repository": {
     "type": "git",
@@ -20,9 +22,11 @@
   },
   "homepage": "https://github.com/danjohnson95/aeromap#readme",
   "devDependencies": {
+    "@types/express": "^4.11.1",
     "Leaflet.Geodesic": "git+https://github.com/henrythasler/Leaflet.Geodesic.git",
     "browserify": "^13.1.0",
     "del": "^2.2.2",
+    "express": "^4.16.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-favicons": "^2.2.6",
@@ -34,5 +38,13 @@
     "leaflet-rotatedmarker": "^0.1.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+    "ts-loader": "^4.0.1",
+    "typescript": "^2.7.2",
+    "vue": "^2.5.13",
+    "vue-loader": "^14.1.1",
+    "webpack": "^4.0.1",
+    "webpack-cli": "^2.0.10"
   }
 }
