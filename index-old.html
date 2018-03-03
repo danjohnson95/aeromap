@@ -1,0 +1,175 @@
+<!doctype html>
+<html manifest="manifest.mf">
+<head>
+	<title>aeromap</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,user-scalable=no">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta charset="UTF-8"> 
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	<link rel="stylesheet" href="/dist/css/app.css">
+</head>
+<body>
+
+	<div id="settings-overlay"></div>
+	<div id="settings-modal">
+		<div class="modal-header">
+			aeromap settings
+			<div class="close-btn">&times;</div>
+		</div>
+
+		<ul>
+
+			<li class="divider">Units</li>
+
+			<li>
+				<label>
+					<span>Altitude</span>
+					<select id="altitude-unit">
+						<option>feet</option>
+						<option>meters</option>
+						<option>miles</option>
+					</select>
+				</label>
+			</li>
+
+			<li>
+				<label>
+					<span>Speed</span>
+					<select id="speed-unit">
+						<option>m/s</option>
+						<option>mph</option>
+						<option>kmh</option>
+						<option>mach</option>
+					</select>
+				</label>
+			</li>
+
+		</ul>
+
+		<!--<ul>
+			<li class="divider">Route</li>
+			<p style="margin: 1em;font-size: 13px">
+				Hey Sam, Claire &amp; Barry!<br>
+				Hope you have an amazing time in Mexico!<br>
+				Thanks for trying out my app! I haven't had time to set up the airport search API but I've put your routes in here. Just tap the one you want 😝
+			</p>
+
+			<div id="set-route-btns">
+				<li class="set-route route-1">
+					Gatwick - Cancun
+				</li>
+
+				<li class="set-route route-2">
+					Cancun - Mexico City
+				</li>
+
+				<li class="set-route route-clear" style="font-weight:bold;color:red">
+					Clear Route
+				</li>
+			</div>
+
+		</ul>-->
+
+
+	</div>
+
+	<div class="beta-msg">
+		Beta
+	</div>
+
+	<div id="map-outer">
+		<div id="map"></div>
+		<div id="mapload" class="show">
+			<div class="spinner"></div>
+		</div>
+	</div>
+
+	<div class="buttons">
+		<button class="move-map">
+			<img src="/dist/img/location.svg">
+		</button>
+
+		<button class="settings">
+			<img src="/dist/img/settings.svg">
+		</button>
+	</div>
+
+	<div id="stats">
+		<div class="box altitude">
+			<small>Altitude</small>
+			<span class="value loading"></span>
+			<span class="unit hide">ft</span>
+		</div>
+
+		<div class="box heading">
+			<small>Heading</small>
+			<span class="value loading"></span>
+			<span class="unit hide">&deg;</span>
+		</div>
+
+		<div class="box speed">
+			<small>Speed</small>
+			<span class="value loading"></span>
+			<span class="unit hide">mph</span>
+		</div>
+
+		<div class="box city">
+			<small>Closest City</small>
+			<span class="value loading"></span>
+		</div>
+
+		<div id="location-not-found">
+			<span>Your GPS signal is weak...</span>
+		</div>
+
+	</div>
+
+	<div id="homescreen-help" class="hide">
+		<div class="inner">
+			For Aeromap to work whilst in Airplane Mode,
+			<ul>
+				<li>tap the <img src="/dist/img/share.png" class="share"> icon</li>
+				<li>select <strong>Add To Home Screen</strong>.</li>
+			</ul>
+			Then launch from the Aeromap icon on your homescreen!
+		</div>
+	</div>
+
+</body>
+
+<script>
+window.addEventListener('load', function(e) {
+  if (window.applicationCache) {
+    window.applicationCache.addEventListener('updateready', function(e) {
+        if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+          // Browser downloaded a new app cache.
+          // Swap it in and reload the page to get the new hotness.
+          window.applicationCache.swapCache();
+          if (confirm('A new version of this site is available. Load it?')) {
+            window.location.reload();
+          }
+        } else {
+          // Manifest didn't changed. Nothing new to server.
+        }
+    }, false);
+  }
+}, false);
+</script>
+
+<script src="/dist/js/app.js" type="text/javascript"></script>
