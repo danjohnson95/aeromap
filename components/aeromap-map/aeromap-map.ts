@@ -23,6 +23,10 @@ export class AeromapMap extends Component {
     marker: any
     map: any
 
+    latitude: number
+    longitude: number
+    heading: number
+
     // static dependencies = [
     //     LocationService
     // ]
@@ -32,18 +36,39 @@ export class AeromapMap extends Component {
         this.innerHTML = ''
         this.initialiseMap()
 
-        this.LocationService.requestPosition()
-        this.LocationService.watchForChanges()
+        // this.LocationService.requestPosition()
+        // this.LocationService.watchForChanges()
 
-        this.LocationService.addListener('positionChanged', (position) => {
-            this.setToCurrentLocation()
+        // this.getAttribute('')
+        // this.LocationService.addListener('positionChanged', (position) => {
+            
+        // })
+    }
 
-            if (this.hasMarkerBeenApplied()) {
-                this.setMarkerToCurrentLocation()
-            } else {
-                this.applyMarker()
-            }
-        })
+    static get observedAttributes() {
+        return [
+            'lat', 'lng'
+        ]
+    }
+
+    attributeChangedCallback (name: string, oldVal: string, newVal: string) {
+        const parsedVal = JSON.parse(newVal)
+
+        switch (name) {
+            case 'lat':
+                this.latitude = parsedVal
+                break
+            case 'lng':
+                this.longitude = parsedVal
+        }
+
+        this.setToCurrentLocation()
+
+        if (this.hasMarkerBeenApplied()) {
+            this.setMarkerToCurrentLocation()
+        } else {
+            this.applyMarker()
+        }
     }
 
     generateMarker () {
@@ -69,7 +94,7 @@ export class AeromapMap extends Component {
 
     applyMarker (): this {
         const location = this.makeLatLng(
-            this.LocationService.latestPosition
+            this.latitude, this.longitude
         )
 
         const markerOptions = {
@@ -78,6 +103,7 @@ export class AeromapMap extends Component {
         }
 
         this.marker = Leaflet.marker(location, markerOptions).addTo(this.map)
+        // this.setMarkerToCurrentHeading()
 
         return this
     }
@@ -88,28 +114,25 @@ export class AeromapMap extends Component {
         return this
     }
 
-    makeLatLng (coordinates: Coordinates) {
-        return Leaflet.latLng(
-            coordinates.latitude,
-            coordinates.longitude
-        )
+    makeLatLng (lat: Number, lng: Number) {
+        return Leaflet.latLng(lat, lng)
     }
 
     setToCurrentLocation (): this {
-        this.setToLocation(this.LocationService.latestPosition)
+        this.setToLocation(this.latitude, this.longitude)
 
         return this
     }
 
     setToDefaultLocation (): this {
-        this.setToLocation(this.defaultLocation)
+        this.setToLocation(0, 0)//this.defaultLocation)
 
         return this
     }
 
-    setToLocation (coordinates: Coordinates): this {
+    setToLocation (lat: Number, lng: Number): this {
         this.map.setView(
-            this.makeLatLng(coordinates)
+            this.makeLatLng(lat, lng)
         )
 
         return this
@@ -128,14 +151,15 @@ export class AeromapMap extends Component {
     }
 
     setMarkerToCurrentHeading (): this {
-        this.setMarkerHeading(
-            this.LocationService.latestPosition.heading
-        )
+        this.setMarkerHeading(this.heading)
+        //     this.LocationService.latestPosition.heading
+        // )
 
         return this
     }
 
     setMarkerHeading (heading: Number): this {
+        console.log(this.marker)
         this.marker.setRotationAngle(heading)
 
         return this
@@ -143,14 +167,14 @@ export class AeromapMap extends Component {
 
     setMarkerToCurrentLocation (): this {
         this.setMarkerToLocation(
-            this.LocationService.latestPosition
+            this.latitude, this.longitude
         )
 
         return this
     }
 
-    setMarkerToLocation (coordinates: Coordinates): this {
-        const location = this.makeLatLng(coordinates)
+    setMarkerToLocation (lat: Number, lng: Number): this {
+        const location = this.makeLatLng(lat, lng)
 
         this.marker.setLatLng(location)
 
