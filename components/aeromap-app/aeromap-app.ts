@@ -34,12 +34,14 @@ export class AeromapApp extends Component {
         const longitude = JSON.stringify(position.longitude)
         const heading = JSON.stringify(position.heading)
         const speed = JSON.stringify(position.speed)
+        const altitude = JSON.stringify(position.altitude)
 
         components.forEach((component) => {
             component.setAttribute('lat', latitude)
             component.setAttribute('lng', longitude)
             component.setAttribute('heading', heading)
             component.setAttribute('speed', speed)
+            component.setAttribute('altitude', altitude)
         })
 
         return this

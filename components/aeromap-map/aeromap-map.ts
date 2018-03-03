@@ -1,25 +1,12 @@
 import Component from '../../src/js/component'
 import * as Leaflet from 'leaflet'
-import LocationService from '../../src/js/LocationService'
 import * as MapTiles from '../../src/json/geojson_small.json'
 import MarkerIconStandard from '../../src/img/marker-icon.png'
 import MarkerIconRetina from '../../src/img/marker-icon-2.png'
 
-class DefaultCoordinates implements Coordinates {
-    readonly accuracy: number = 0
-    readonly altitude: number | null = 0
-    readonly altitudeAccuracy: number | null = 0
-    readonly heading: number | null = 0
-    readonly latitude: number = 0
-    readonly longitude: number = 0
-    readonly speed: number | null = 0
-}
-
 export class AeromapMap extends Component {
     static tag = 'aeromap-map'
-    LocationService: LocationService
     defaultZoom: number = 10
-    defaultLocation: Coordinates = new DefaultCoordinates()
     marker: any
     map: any
 
@@ -27,22 +14,9 @@ export class AeromapMap extends Component {
     longitude: number
     heading: number
 
-    // static dependencies = [
-    //     LocationService
-    // ]
-
     connectedCallback() {
-        this.LocationService = new LocationService()
         this.innerHTML = ''
         this.initialiseMap()
-
-        // this.LocationService.requestPosition()
-        // this.LocationService.watchForChanges()
-
-        // this.getAttribute('')
-        // this.LocationService.addListener('positionChanged', (position) => {
-            
-        // })
     }
 
     static get observedAttributes() {
@@ -152,8 +126,6 @@ export class AeromapMap extends Component {
 
     setMarkerToCurrentHeading (): this {
         this.setMarkerHeading(this.heading)
-        //     this.LocationService.latestPosition.heading
-        // )
 
         return this
     }
