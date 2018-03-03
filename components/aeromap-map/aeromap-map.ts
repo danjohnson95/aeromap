@@ -3,11 +3,21 @@ import * as Leaflet from 'leaflet'
 import LocationService from '../../src/js/LocationService'
 import * as MapTiles from '../../src/json/geojson_small.json'
 
+class DefaultCoordinates implements Coordinates {
+    readonly accuracy: number = 0
+    readonly altitude: number | null = 0
+    readonly altitudeAccuracy: number | null = 0
+    readonly heading: number | null = 0
+    readonly latitude: number = 0
+    readonly longitude: number = 0
+    readonly speed: number | null = 0
+}
+
 export class AeromapMap extends Component {
     static tag = 'aeromap-map'
     LocationService: LocationService
     defaultZoom: number = 10
-    defaultLocation: Coordinates = new Coordinates()
+    defaultLocation: Coordinates = new DefaultCoordinates()
     map: any
 
     // static dependencies = [
