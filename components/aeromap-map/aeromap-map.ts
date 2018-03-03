@@ -33,10 +33,17 @@ export class AeromapMap extends Component {
         this.initialiseMap()
 
         this.LocationService.requestPosition()
-            .then((location) => {
-                this.setToCurrentLocation()
+        this.LocationService.watchForChanges()
+
+        this.LocationService.addListener('positionChanged', (position) => {
+            this.setToCurrentLocation()
+
+            if (this.hasMarkerBeenApplied()) {
+                this.setMarkerToCurrentLocation()
+            } else {
                 this.applyMarker()
-            })
+            }
+        })
     }
 
     generateMarker () {
@@ -56,6 +63,10 @@ export class AeromapMap extends Component {
             .setToDefaultZoom()
     }
 
+    hasMarkerBeenApplied (): boolean {
+        return !!this.marker
+    }
+
     applyMarker (): this {
         const location = this.makeLatLng(
             this.LocationService.latestPosition
@@ -66,7 +77,7 @@ export class AeromapMap extends Component {
             rotationOrigin: 'center center'
         }
 
-        this.marker = Leaflet.marker(location, markerOptions).addTo(this.map);
+        this.marker = Leaflet.marker(location, markerOptions).addTo(this.map)
 
         return this
     }
@@ -126,6 +137,22 @@ export class AeromapMap extends Component {
 
     setMarkerHeading (heading: Number): this {
         this.marker.setRotationAngle(heading)
+
+        return this
+    }
+
+    setMarkerToCurrentLocation (): this {
+        this.setMarkerToLocation(
+            this.LocationService.latestPosition
+        )
+
+        return this
+    }
+
+    setMarkerToLocation (coordinates: Coordinates): this {
+        const location = this.makeLatLng(coordinates)
+
+        this.marker.setLatLng(location)
 
         return this
     }

@@ -7,10 +7,10 @@ module.exports = {
     },
     module: {
         rules: [
-            // { 
-            //     test: /\.css?$/, 
-            //     use: ['style-loader', 'css-loader']
-            // },
+            { 
+                test: /\.css?$/,
+                use: ['style-loader', 'css-loader']
+            },
             {
                 test: /\.ts$/,
                 use: ['ts-loader'],
@@ -24,9 +24,9 @@ module.exports = {
     },
     resolve: {
         extensions: ['.css', '.ts', '.json', '.png'],
-        // alias: {
-        //     leaflet_css: '/node_modules/leaflet/dist/leaflet.css'
-        // }
+        alias: {
+            leaflet_css: '/node_modules/leaflet/dist/leaflet.css'
+        }
     },
 
 }
