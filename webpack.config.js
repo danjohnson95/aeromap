@@ -15,11 +15,15 @@ module.exports = {
                 test: /\.ts$/,
                 use: ['ts-loader'],
                 exclude: /node_modules/
+            },
+            {
+                test: /\.png$/,
+                loader: "url-loader?mimetype=image/png"
             }
         ],
     },
     resolve: {
-        extensions: ['.css', '.ts', '.json'],
+        extensions: ['.css', '.ts', '.json', '.png'],
         // alias: {
         //     leaflet_css: '/node_modules/leaflet/dist/leaflet.css'
         // }

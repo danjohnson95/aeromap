@@ -2,6 +2,8 @@ import Component from '../../src/js/component'
 import * as Leaflet from 'leaflet'
 import LocationService from '../../src/js/LocationService'
 import * as MapTiles from '../../src/json/geojson_small.json'
+import MarkerIconStandard from '../../src/img/marker-icon.png'
+import MarkerIconRetina from '../../src/img/marker-icon-2.png'
 
 class DefaultCoordinates implements Coordinates {
     readonly accuracy: number = 0
@@ -18,6 +20,7 @@ export class AeromapMap extends Component {
     LocationService: LocationService
     defaultZoom: number = 10
     defaultLocation: Coordinates = new DefaultCoordinates()
+    marker: any
     map: any
 
     // static dependencies = [
@@ -32,18 +35,46 @@ export class AeromapMap extends Component {
         this.LocationService.requestPosition()
             .then((location) => {
                 this.setToCurrentLocation()
+                this.applyMarker()
             })
+    }
+
+    generateMarker () {
+        return Leaflet.icon({
+		    iconUrl: MarkerIconStandard,
+		    iconRetinaUrl: MarkerIconRetina,
+		    iconAnchor: [15, 15],
+		    iconSize: [30, 30]
+		});
     }
 
     initialiseMap () {
         this.map = Leaflet.map(this)
+
         this.applyTiles()
-        this.setToDefaultLocation()
-        this.setToDefaultZoom()
+            .setToDefaultLocation()
+            .setToDefaultZoom()
     }
 
-    applyTiles () {
+    applyMarker (): this {
+        const location = this.makeLatLng(
+            this.LocationService.latestPosition
+        )
+
+        const markerOptions = {
+            icon: this.generateMarker(),
+            rotationOrigin: 'center center'
+        }
+
+        this.marker = Leaflet.marker(location, markerOptions).addTo(this.map);
+
+        return this
+    }
+
+    applyTiles (): this {
         Leaflet.geoJson(MapTiles).addTo(this.map)
+
+        return this
     }
 
     makeLatLng (coordinates: Coordinates) {
@@ -53,25 +84,49 @@ export class AeromapMap extends Component {
         )
     }
 
-    setToCurrentLocation () {
+    setToCurrentLocation (): this {
         this.setToLocation(this.LocationService.latestPosition)
+
+        return this
     }
 
-    setToDefaultLocation () {
+    setToDefaultLocation (): this {
         this.setToLocation(this.defaultLocation)
+
+        return this
     }
 
-    setToLocation (coordinates: Coordinates) {
+    setToLocation (coordinates: Coordinates): this {
         this.map.setView(
             this.makeLatLng(coordinates)
         )
+
+        return this
     }
 
-    setZoom (zoom: number) {
+    setZoom (zoom: number): this {
         this.map.setZoom(zoom)
+
+        return this
     }
 
-    setToDefaultZoom () {
+    setToDefaultZoom (): this {
         this.setZoom(this.defaultZoom)
+
+        return this
+    }
+
+    setMarkerToCurrentHeading (): this {
+        this.setMarkerHeading(
+            this.LocationService.latestPosition.heading
+        )
+
+        return this
+    }
+
+    setMarkerHeading (heading: Number): this {
+        this.marker.setRotationAngle(heading)
+
+        return this
     }
 }
