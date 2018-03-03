@@ -7,6 +7,7 @@ export class AeromapMap extends Component {
     static tag = 'aeromap-map'
     LocationService: LocationService
     defaultZoom: number = 10
+    defaultLocation: Coordinates = new Coordinates()
     map: any
 
     // static dependencies = [
@@ -16,19 +17,18 @@ export class AeromapMap extends Component {
     connectedCallback() {
         this.LocationService = new LocationService()
         this.innerHTML = ''
+        this.initialiseMap()
 
         this.LocationService.requestPosition()
             .then((location) => {
-                console.log(location)
-                this.initialiseMap()
+                this.setToCurrentLocation()
             })
     }
 
     initialiseMap () {
-        this.map = Leaflet.map(this)// .setLatLng(this.LocationService.latestPosition)
-        console.log(this.map)
+        this.map = Leaflet.map(this)
         this.applyTiles()
-        this.setToCurrentLocation()
+        this.setToDefaultLocation()
         this.setToDefaultZoom()
     }
 
@@ -44,12 +44,24 @@ export class AeromapMap extends Component {
     }
 
     setToCurrentLocation () {
+        this.setToLocation(this.LocationService.latestPosition)
+    }
+
+    setToDefaultLocation () {
+        this.setToLocation(this.defaultLocation)
+    }
+
+    setToLocation (coordinates: Coordinates) {
         this.map.setView(
-            this.makeLatLng(this.LocationService.latestPosition)
+            this.makeLatLng(coordinates)
         )
     }
 
+    setZoom (zoom: number) {
+        this.map.setZoom(zoom)
+    }
+
     setToDefaultZoom () {
-        this.map.setZoom(this.defaultZoom)
+        this.setZoom(this.defaultZoom)
     }
 }
