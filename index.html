@@ -2,9 +2,29 @@
 <html>
     <head>
         <title>Aeromap</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+        <script src="./dist/dist/js/aeromap.js"></script>
+
+        <style>
+            aeromap-map {
+                display: block;
+                width: 500px;
+                height: 500px;
+            }
+        </style>
     </head>
     <body>
+        <aeromap-app></aeromap-app>
 
-        <script src="./dist/js/aeromap.js"></script>
+        <!-- <script>
+            class Aeromap extends HTMLElement {
+                constructor () {
+                    super()
+                    this.innerHTML = `<div>I am a div</div>`
+                }
+            }
+
+            window.customElements.define('aeromap-app', Aeromap)
+        </script> -->
     </body>
 </html>
