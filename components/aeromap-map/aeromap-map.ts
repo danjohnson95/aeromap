@@ -14,8 +14,13 @@ export class AeromapMap extends Component {
     longitude: number
     heading: number
 
+    applyStyle () {
+        require('./aeromap-map.css')
+    }
+
     connectedCallback() {
         this.innerHTML = ''
+        this.applyStyle()
         this.initialiseMap()
     }
 

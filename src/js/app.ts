@@ -36,7 +36,6 @@ export default class App {
 
     setComponents(components: any[]): this {
         this.components = components
-        this.registerComponents()
 
         return this
     }
@@ -54,5 +53,9 @@ export default class App {
             component.tag,
             component
         )
+    }
+
+    start () {
+        this.registerComponents()
     }
 }

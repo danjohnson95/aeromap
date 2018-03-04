@@ -1,10 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>Aeromap</title>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
-        <script src="./dist/dist/js/aeromap.js"></script>
-
+        <title><%= htmlWebpackPlugin.options.title %></title>
         <style>
             aeromap-map {
                 display: block;
@@ -14,17 +11,6 @@
         </style>
     </head>
     <body>
-        <aeromap-app></aeromap-app>
-
-        <!-- <script>
-            class Aeromap extends HTMLElement {
-                constructor () {
-                    super()
-                    this.innerHTML = `<div>I am a div</div>`
-                }
-            }
-
-            window.customElements.define('aeromap-app', Aeromap)
-        </script> -->
+        <aeromap-map></aeromap-map>
     </body>
 </html>

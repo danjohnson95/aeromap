@@ -6,7 +6,7 @@ import { AeromapMap } from '../../components/aeromap-map/aeromap-map'
 import { AeromapStats } from '../../components/aeromap-stats/aeromap-stats'
 
 // Services
-import LocationService from './LocationService'
+// import LocationService from './LocationService'
 
 const aeromap = new App
 
@@ -17,5 +17,7 @@ const aeromap = new App
 aeromap.setComponents([
     AeromapApp,
     AeromapMap,
-    AeromapStats
+    AeromapStats,
 ])
+
+aeromap.start()

@@ -47,5 +47,5 @@ export default class LocationService extends EventEmitter {
     stopWatchingForChanges (): void {
         navigator.geolocation.clearWatch(this.watchId)
     }
- 
+
 }
